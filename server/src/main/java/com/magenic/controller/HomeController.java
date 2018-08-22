@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
 
-	@RequestMapping("/hello")
-	String sayHello() {
-		return "Hello World";
+	@RequestMapping("/")
+	String welcome() {
+		return "Hello. Welcome to the Health Hub!";
 	}
 }
