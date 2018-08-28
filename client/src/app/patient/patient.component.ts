@@ -1,8 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+
+import {
+    MatPaginator,
+    MatSort,
+    MatTableDataSource
+} from '@angular/material';
 
 import { PatientService } from './shared/patient.service';
+
 import { Patient } from './shared/patient';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
     selector: 'app-patient',
@@ -11,7 +18,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 })
 export class PatientComponent implements OnInit {
     public displayedColumns: string[] = [
-        'firstName',
+        'firstName lastName',
         'phone',
         'email'
     ];
@@ -20,11 +27,22 @@ export class PatientComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(private patientService: PatientService) { }
+    constructor(private patientService: PatientService,
+                private router: Router) { }
 
     ngOnInit() {
-        this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.dataSource.sortingDataAccessor = (item, prop) => {
+            switch (prop) {
+                case 'firstName lastName':
+                    return item.firstName + '' + item.lastName;
+                case 'phone':
+                    return item.phone;
+                case 'email':
+                    return item.email;
+            }
+        };
+        this.dataSource.sort = this.sort;
         this.getPatients();
     }
 
@@ -37,5 +55,13 @@ export class PatientComponent implements OnInit {
                 err => console.error(err),
                 () => console.log('Patients loaded')
             );
+    }
+
+    navigate(path: string) {
+        this.router.navigateByUrl('/patientDetail');
+    }
+
+    sortTable(event) {
+        console.log(event);
     }
 }

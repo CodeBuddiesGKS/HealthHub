@@ -1,13 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+/* @import '~@angular/material/prebuilt-themes/indigo-pink.css'; */
 
 body { 
   font-family: Roboto, Arial, sans-serif;
+  color: #37474f;
   margin: 0;
 }
 
 .basic-container {
   padding: 30px;
+}
+
+.button-row button,
+.button-row a {
+  margin-right: 8px;
+}
+
+.final-page-section {
+  margin-bottom: 15px;
+}
+
+.spread {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.spread > * {
+  margin-right: 15px;
+}
+
+.text-link {
+  text-decoration: none;
 }
 
 .version-info {

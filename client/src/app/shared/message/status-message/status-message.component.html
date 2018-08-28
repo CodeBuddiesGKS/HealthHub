@@ -1,0 +1,10 @@
+<div class="spread" *ngIf="data.type === 'success'">
+    <mat-icon color="accent">check_circle</mat-icon>
+    <span class="accentColor">{{data.message}}</span>
+    <button mat-button color="accent" (click)="onAction()">{{data.action}}</button>
+</div>
+<div class="spread" *ngIf="data.type === 'error'">
+    <mat-icon color="error">error</mat-icon>
+    <span class="errorColor">{{data.message}}</span>
+    <button mat-button color="error" (click)="onAction()">{{data.action}}</button>
+</div>

@@ -1,23 +1,4 @@
-<mat-toolbar color="primary">
-  <span>Health Hub</span>
 
-  <span class="toolbar-fill-remaining-space"></span>
-
-  <span>
-    <mat-menu #appMenu="matMenu">
-      <ng-template matMenuContent let-name="name">
-        <button mat-menu-item>Settings</button>
-        <button mat-menu-item>Logout</button>
-      </ng-template>
-    </mat-menu>
-
-    <span style="font-size: 12px;">Signed in as: {{name}}</span>
-
-    <button mat-icon-button [matMenuTriggerFor]="appMenu" [matMenuTriggerData]="{name: name}">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-  </span>
-</mat-toolbar>
 <mat-tab-group>
   <mat-tab label="Patients">
     <ng-template matTabContent>

@@ -1,7 +1,33 @@
+
 table {
   width: 100%;
 }
 
 th.mat-sort-header-sorted {
   color: black;
+}
+
+.icon-shift {
+  margin-right: 5px;
+}
+
+div.test-items {
+  border: 1px solid black;
+  background-color: paleturquoise;
+}
+div.test-items div {
+  border: 1px solid black;
+  padding: 15px;
+}
+div.test-items div:nth-child(1) {
+  background-color: red;
+}
+div.test-items div:nth-child(2) {
+  background-color: blue;
+}
+div.test-items div:nth-child(3) {
+  background-color: green;
+}
+div.test-items div:nth-child(4) {
+  background-color: yellow;
 }

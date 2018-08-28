@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Patient } from './patient';
-//import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -14,12 +14,12 @@ export class PatientService {
 
     constructor(private http: HttpClient) { }
 
-    getPatients() {
+    getPatients(): Observable<Patient[]> {
         return this.http.get<Patient[]>(this.endpoint);
     }
 
-    getPatient(id: number) {
-        return this.http.get(this.endpoint + '/' + id);
+    getPatient(id: number): Observable<Patient> {
+        return this.http.get<Patient>(this.endpoint + '/' + id);
     }
 
     createPatient(patient: Patient) {
@@ -27,12 +27,12 @@ export class PatientService {
         return this.http.post(this.endpoint, body, httpOptions);
     }
 
-    updatePatient(id: number, patient: Patient) {
+    updatePatient(id: number, patient: Patient): Observable<Patient> {
         let body = JSON.stringify(patient);
-        return this.http.put(this.endpoint + '/' + id, body, httpOptions);
+        return this.http.put<Patient>(this.endpoint + '/' + id, body, httpOptions);
     }
 
-    deletePatient(id) {
-        return this.http.delete(this.endpoint + '/' + id);
+    deletePatient(id): Observable<Patient> {
+        return this.http.delete<Patient>(this.endpoint + '/' + id);
     }
 }

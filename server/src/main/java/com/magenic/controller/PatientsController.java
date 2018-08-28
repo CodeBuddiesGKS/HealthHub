@@ -39,8 +39,8 @@ public class PatientsController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createPatient(@RequestBody Patient patient) {
-		patientRepository.save(patient);
+	public Patient createPatient(@RequestBody Patient patient) {
+		return patientRepository.save(patient);
 	}
 
 	@PutMapping("/{id}")

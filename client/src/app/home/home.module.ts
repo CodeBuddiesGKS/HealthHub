@@ -1,28 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import {
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatTabsModule,
-    MatToolbarModule
-} from '@angular/material';
+import { PatientModule } from '../patient/patient.module';
+import { SharedModule } from '../shared/shared.module';
 
 import { HomeComponent } from './home.component';
-import { PatientModule } from '../patient/patient.module';
 
 @NgModule({
     imports: [
         CommonModule,
-
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        MatTabsModule,
-        MatToolbarModule,
-
-        PatientModule
+        PatientModule,
+        SharedModule
     ],
     declarations: [
         HomeComponent

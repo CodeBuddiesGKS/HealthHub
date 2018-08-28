@@ -1,1 +1,29 @@
-<router-outlet></router-outlet>
+
+
+<mat-toolbar color="primary">
+    <span>Health Hub</span>
+  
+    <span class="toolbar-fill-remaining-space"></span>
+  
+    <span>
+      <mat-menu #appMenu="matMenu">
+        <ng-template matMenuContent let-name="name">
+          <button mat-menu-item>My Profile</button>
+          <button mat-menu-item>Settings</button>
+          <button mat-menu-item>Help</button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item>Sign Out</button>
+        </ng-template>
+      </mat-menu>
+  
+      <span style="font-size: 12px;">Signed in as: {{name}}</span>
+  
+      <button mat-icon-button [matMenuTriggerFor]="appMenu" [matMenuTriggerData]="{name: name}">
+        <mat-icon class="account-avatar-icon">account_circle</mat-icon>
+      </button>
+    </span>
+  </mat-toolbar>
+  
+  <router-outlet></router-outlet>
+
+  <app-message></app-message>
