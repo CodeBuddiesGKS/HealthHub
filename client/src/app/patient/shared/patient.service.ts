@@ -22,9 +22,9 @@ export class PatientService {
         return this.http.get<Patient>(this.endpoint + '/' + id);
     }
 
-    createPatient(patient: Patient) {
+    createPatient(patient: Patient): Observable<Patient> {
         let body = JSON.stringify(patient);
-        return this.http.post(this.endpoint, body, httpOptions);
+        return this.http.post<Patient>(this.endpoint, body, httpOptions);
     }
 
     updatePatient(id: number, patient: Patient): Observable<Patient> {

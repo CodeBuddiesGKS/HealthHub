@@ -7,6 +7,7 @@ import {
     MatTableDataSource
 } from '@angular/material';
 
+import { MessageService } from '../core/message.service';
 import { PatientService } from './shared/patient.service';
 
 import { Patient } from './shared/patient';
@@ -27,7 +28,8 @@ export class PatientComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(private patientService: PatientService,
+    constructor(private messageService: MessageService,
+                private patientService: PatientService,
                 private router: Router) { }
 
     ngOnInit() {
@@ -47,21 +49,14 @@ export class PatientComponent implements OnInit {
     }
 
     getPatients() {
-        this.patientService.getPatients()
-            .subscribe(
-                data => {
-                    this.dataSource.data = data;
-                },
-                err => console.error(err),
-                () => console.log('Patients loaded')
-            );
+        this.patientService.getPatients().subscribe(data => {
+            this.dataSource.data = data;
+        }, err => {
+            this.messageService.error('Error - Unable to get Physicians List')
+        });
     }
 
     navigate(path: string) {
-        this.router.navigateByUrl('/patientDetail');
-    }
-
-    sortTable(event) {
-        console.log(event);
+        this.router.navigateByUrl(path);
     }
 }

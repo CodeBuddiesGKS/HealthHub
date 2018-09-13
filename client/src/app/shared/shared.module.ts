@@ -4,10 +4,17 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import {
+    MatAutocompleteModule,
     MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatDialogModule,
     MatDividerModule,
     MatIconModule,
     MatInputModule,
+    MatListModule,
     MatMenuModule,
     MatPaginatorModule,
     MatSnackBarModule,
@@ -16,6 +23,8 @@ import {
     MatTabsModule,
     MatToolbarModule
 } from '@angular/material';
+
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 import { MessageComponent } from './message/message.component';
 import { StatusMessageComponent } from './message/status-message/status-message.component';
@@ -26,11 +35,19 @@ import { StatusMessageComponent } from './message/status-message/status-message.
     imports: [
         CommonModule,
 
+        MatAutocompleteModule,
         MatButtonModule,
+        MatButtonToggleModule,
+        MatCardModule,
+        MatChipsModule,
+        MatDatepickerModule,
+        MatDialogModule,
         MatDividerModule,
         MatIconModule,
         MatInputModule,
+        MatListModule,
         MatMenuModule,
+        MatMomentDateModule,
         MatPaginatorModule,
         MatSnackBarModule,
         MatSortModule,
@@ -44,20 +61,27 @@ import { StatusMessageComponent } from './message/status-message/status-message.
     ],
     exports: [
         FlexLayoutModule,
+        MessageComponent,
         
+        MatAutocompleteModule,
         MatButtonModule,
+        MatButtonToggleModule,
+        MatCardModule,
+        MatChipsModule,
+        MatDatepickerModule,
+        MatDialogModule,
         MatDividerModule,
         MatIconModule,
         MatInputModule,
+        MatListModule,
         MatMenuModule,
+        MatMomentDateModule,
         MatPaginatorModule,
         MatSnackBarModule,
         MatSortModule,
         MatTableModule,
         MatTabsModule,
-        MatToolbarModule,
-
-        MessageComponent
+        MatToolbarModule
     ],
     entryComponents: [
         StatusMessageComponent

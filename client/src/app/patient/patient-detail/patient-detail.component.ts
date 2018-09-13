@@ -69,6 +69,5 @@ export class PatientDetailComponent implements OnInit {
                     this.messageService.error('Error - Unable to save patient');
                 });
         }
-        //this.patientService.createPatient(this.patientEntity);
     }
 }

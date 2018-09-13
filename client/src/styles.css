@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 /* @import '~@angular/material/prebuilt-themes/indigo-pink.css'; */
 
-body { 
+html, body { 
   font-family: Roboto, Arial, sans-serif;
   color: #37474f;
   margin: 0;
@@ -11,13 +11,20 @@ body {
   padding: 30px;
 }
 
-.button-row button,
-.button-row a {
+.button-row .button-row-item {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.button-row .button-row-item:not(:last-child) {
   margin-right: 8px;
 }
 
 .final-page-section {
   margin-bottom: 15px;
+}
+
+.icon-shift {
+  margin-right: 5px;
 }
 
 .spread {

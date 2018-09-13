@@ -37,7 +37,7 @@
         <input matInput
                type="text"
                name="birthDate"
-               placeholder="mm-dd-yyyy"
+               placeholder="yyyy-mm-dd"
                [(ngModel)]="patientEntity.birthDate"
                required>
         <mat-error>This field is required</mat-error>
@@ -122,8 +122,8 @@
       </mat-form-field>
     </form>
     <div fxLayout="row" fxLayoutAlign="center" fxFlex="100" class="button-row final-page-section">
-      <button mat-stroked-button (click)="cancel()">Cancel</button>
-      <button mat-flat-button color="accent" (click)="save()">Save</button>
+      <button mat-stroked-button class="button-row-item" (click)="cancel()">Cancel</button>
+      <button mat-flat-button color="accent" class="button-row-item" (click)="save()">Save</button>
     </div>
   </div>
 </div>

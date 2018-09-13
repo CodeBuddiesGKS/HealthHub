@@ -1,6 +1,5 @@
-
 <div fxLayout="row wrap">
-  <div fxFlex="90" fxFlexOffset="5" fxFlex.xs="100" fxFlexOffset.xs="0" fxLayout="row">
+  <div fxFlex="90" fxFlexOffset="5" fxLayout="row">
     <h2>Patient List</h2>
     <div fxFlex="1 1 auto"></div>
     <button fxFlexAlign="center" mat-raised-button color="accent" (click)="navigate('/patientDetail')">
@@ -35,32 +34,3 @@
     <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons></mat-paginator>
   </div>
 </div>
-
-<!-- 
-<div class="test-items" fxLayout="row" fxLayoutAlign="start center">
-  <div fxFlex="1 1 auto">One</div>
-  <div fxFlex="2 2 auto">Two</div>
-  <div fxFlex="3 3 auto">Three</div>
-  <div fxFlex="4 4 auto">Four</div>
-</div>
-
-<div class="test-items" fxLayout="row" fxLayoutAlign="space-evenly center">
-  <div>One</div>
-  <div>Two</div>
-  <div>Three</div>
-  <div>Four</div>
-</div>
-
-<div class="test-items" fxLayout="row">
-  <div fxFlexOffset="5" fxFlex="10">One</div>
-  <div fxFlexOffset="10" fxFlex="20">Two</div>
-  <div fxFlexOffset="10" fxFlex="20">Three</div>
-  <div fxFlexOffset="10" fxFlex="10">Four</div>
-</div>
-
-<div class="test-items" fxLayout="row" fxLayoutAlign="space-evenly" style="height: 100px;">
-  <div style="height: 20px;" fxFlexAlign="start">One</div>
-  <div style="height: 20px;" fxFlexAlign="center">Two</div>
-  <div style="height: 20px;" fxFlexAlign="end">Three</div>
-  <div fxFlexAlign="stretch">Four</div>
-</div> -->

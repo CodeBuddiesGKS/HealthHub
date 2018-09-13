@@ -48,9 +48,8 @@
 }
 
 // Define the default theme (same as the example above).
-$light-app-primary: mat-palette($mat-blue, A400, A200, A700);
-$light-app-accent:  mat-palette($mat-green, A400, A200, A700);
-//$light-app-accent:  mat-palette($mat-light-green, A400, A200, A700);
+$light-app-primary: mat-palette($mat-blue, A400);
+$light-app-accent:  mat-palette($mat-green, A400);
 $light-app-warn:    mat-palette($mat-red, 500);
 $light-app-theme:   mat-light-theme($light-app-primary, $light-app-accent, $light-app-warn);
 

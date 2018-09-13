@@ -1,0 +1,50 @@
+
+.appointment {
+  height: 60px;
+  padding: 0;
+}
+.appointment-header {
+  background-color: #00e676;
+  padding-left: 5px;
+}
+.appointment-body {
+  background-color: #66ffa6;
+  padding-left: 5px;
+}
+
+.resource-calendar-container {
+  overflow-x: auto;
+}
+.resource-calendar {
+  border-bottom: #00e676 solid 1px;
+}
+.resource-calendar-header {
+  height: 60px;
+}
+.resource-calendar-timeslot {
+  position: absolute;
+  top: 180px;
+  height: 60px;
+  border-top: #00e676 solid 1px;
+}
+
+.scroll-list-header {
+  margin: 0;
+}
+.scroll-list-md {
+  height: 250px;
+  overflow-y: auto;
+}
+
+.time-column {
+  border-right: #00e676 solid 1px;
+  border-bottom: #00e676 solid 1px;
+  width: 60px;
+}
+.time-unit-header {
+  height: 60px;
+}
+.time-unit {
+  height: 60px;
+  border-top: #00e676 solid 1px;
+}

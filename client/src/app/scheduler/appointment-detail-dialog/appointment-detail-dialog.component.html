@@ -1,0 +1,77 @@
+<div fxLayout="row wrap" *ngIf="appointmentEntity">
+  <div fxLayout="row wrap"
+    fxFlex="90" fxFlexOffset="5"
+    fxFlex.xs="100" fxFlexOffset.xs="0">
+    <h2 fxFlex="100">{{pageTitle}}</h2>
+    <form fxLayout="row wrap" fxFlex="100">
+      <mat-form-field fxFlex="48" fxFlex.xs="100">
+        <mat-label>Start Date / Time</mat-label>
+        <input
+          matInput
+          type="datetime-local"
+          name="startDatetime"
+          [(ngModel)]="appointmentEntity.startDatetime"
+          required>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        fxFlex="50" fxFlexOffset="2"
+        fxFlex.xs="100" fxFlexOffset.xs="0">
+        <mat-label>End Date / Time</mat-label>
+        <input
+          matInput
+          type="datetime-local"
+          name="endDatetime"
+          [(ngModel)]="appointmentEntity.endDatetime"
+          required>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="100">
+        <input
+          type="text"
+          placeholder="Doctor"
+          aria-label="Doctor"
+          matInput
+          [formControl]="doctorControl"
+          [matAutocomplete]="doctorAuto"
+          required>
+        <mat-error>This field is required</mat-error>
+        <mat-autocomplete autoActiveFirstOption #doctorAuto="matAutocomplete">
+          <mat-option *ngFor="let doctor of filteredDoctors | async" [value]="doctor">
+            {{doctor}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="100">
+        <input
+          type="text"
+          placeholder="Patient"
+          aria-label="Patient"
+          matInput
+          [formControl]="patientControl"
+          [matAutocomplete]="patientAuto"
+          required>
+        <mat-error>This field is required</mat-error>
+        <mat-autocomplete autoActiveFirstOption #patientAuto="matAutocomplete">
+          <mat-option *ngFor="let patient of filteredPatients | async" [value]="patient">
+            {{patient}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="100">
+        <mat-label>Description</mat-label>
+        <input matInput type="text" name="description" placeholder="Description" [(ngModel)]="appointmentEntity.description"
+          required>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+    </form>
+    <div fxLayout="row" fxLayoutAlign="center" fxFlex="100" class="button-row final-page-section">
+      <button mat-stroked-button class="button-row-item" (click)="cancel()">Cancel</button>
+      <button mat-flat-button color="accent" class="button-row-item" (click)="save()">Save</button>
+    </div>
+  </div>
+</div>

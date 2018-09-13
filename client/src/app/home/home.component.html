@@ -1,13 +1,28 @@
 
 <mat-tab-group>
-  <mat-tab label="Patients">
+  <mat-tab label="Patient">
     <ng-template matTabContent>
       <app-patient></app-patient>
     </ng-template>
   </mat-tab>
-  <mat-tab label="Tests">
+  <mat-tab label="Billing">
     <ng-template matTabContent>
-      Tests List
+      <app-billing></app-billing>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Scheduler">
+    <ng-template matTabContent>
+      <app-scheduler></app-scheduler>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Office Manager">
+    <ng-template matTabContent>
+      <app-office></app-office>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Physicians Directory">
+    <ng-template matTabContent>
+      <app-physician></app-physician>
     </ng-template>
   </mat-tab>
 </mat-tab-group>
