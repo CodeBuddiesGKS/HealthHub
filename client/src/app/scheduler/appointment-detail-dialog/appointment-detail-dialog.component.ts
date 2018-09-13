@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -39,14 +40,11 @@ export class AppointmentDetailDialogComponent implements OnInit {
     public patientControl = new FormControl();
     public filteredPatients: Observable<string[]>;
 
-    constructor() { }
+    constructor(private route: ActivatedRoute) { }
 
     ngOnInit() {
-        // this.id = +this.route.snapshot.paramMap.get('id');
-        this.editMode = false;
-        if (this.id) {
-            this.editMode = true;
-        }
+        this.id = +this.route.snapshot.paramMap.get('id');
+        this.editMode = !!this.id;
 
         this.filteredDoctors = this.doctorControl.valueChanges.pipe(
             startWith(''),

@@ -24,17 +24,13 @@ export class PatientDetailComponent implements OnInit {
 
     ngOnInit() {
         this.id = +this.route.snapshot.paramMap.get('id');
-        this.editMode = false;
-        if (this.id) {
-            this.editMode = true;
-        }
+        this.editMode = !!this.id;
 
         if (!this.editMode) {
             this.pageTitle = 'Add Patient';
             this.patientEntity = new Patient();
         } else {
             this.pageTitle = 'Edit Patient';
-
             this.patientService.getPatient(this.id)
                 .subscribe(patient => {
                     this.patientEntity = patient;
@@ -53,21 +49,19 @@ export class PatientDetailComponent implements OnInit {
 
     save() {
         if (!this.editMode) {
-            this.patientService.createPatient(this.patientEntity)
-                .subscribe(patient => {
-                    this.messageService.success('Patient was successfully created!');
-                    this.router.navigateByUrl('/home');
-                }, error => {
-                    this.messageService.error('Error - Unable to create patient');
-                });
+            this.patientService.createPatient(this.patientEntity).subscribe(patient => {
+                this.messageService.success('Patient was successfully created!');
+                this.router.navigateByUrl('/home');
+            }, error => {
+                this.messageService.error('Error - Unable to create patient');
+            });
         } else {
-            this.patientService.updatePatient(this.id, this.patientEntity)
-                .subscribe(patient => {
-                    this.messageService.success('Patient was successfully saved!');
-                    this.router.navigateByUrl('/home');
-                }, error => {
-                    this.messageService.error('Error - Unable to save patient');
-                });
+            this.patientService.updatePatient(this.id, this.patientEntity).subscribe(patient => {
+                this.messageService.success('Patient was successfully saved!');
+                this.router.navigateByUrl('/home');
+            }, error => {
+                this.messageService.error('Error - Unable to save patient');
+            });
         }
     }
 }

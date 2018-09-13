@@ -21,7 +21,8 @@ export class PatientComponent implements OnInit {
     public displayedColumns: string[] = [
         'firstName lastName',
         'phone',
-        'email'
+        'email',
+        'options'
     ];
     public dataSource = new MatTableDataSource<Patient>();
 
@@ -46,6 +47,14 @@ export class PatientComponent implements OnInit {
         };
         this.dataSource.sort = this.sort;
         this.getPatients();
+    }
+
+    deletePatient(patientId) {
+        this.patientService.deletePatient(patientId).subscribe(deletedPatient => {
+            this.messageService.success('Successfully deleted Patient');
+        }, err => {
+            this.messageService.error('Error - Unable to delete Patient')
+        });
     }
 
     getPatients() {
