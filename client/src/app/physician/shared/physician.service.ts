@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Physician } from './physician';
-import { Observable } from 'rxjs';
+
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,32 +17,32 @@ export class PhysicianService {
     constructor(private http: HttpClient) { }
 
     getPhysicians(): Observable<Physician[]> {
-        return this.http.get<Physician[]>(this.endpoint);
+        return this.http.get<Physician[]>(this.endpoint).pipe(catchError(() => of(null)));
     }
     
     getPhysiciansByOfficeId(officeId) {
         let path = this.endpoint + '/officeId/' + officeId;
-        return this.http.get<Physician[]>(path);
+        return this.http.get<Physician[]>(path).pipe(catchError(() => of(null)));
     }
 
     getPhysician(id: number): Observable<Physician> {
         let path = this.endpoint + '/' + id;
-        return this.http.get<Physician>(path);
+        return this.http.get<Physician>(path).pipe(catchError(() => of(null)));
     }
 
     createPhysician(physician: Physician): Observable<Physician> {
         let body = JSON.stringify(physician);
-        return this.http.post<Physician>(this.endpoint, body, httpOptions);
+        return this.http.post<Physician>(this.endpoint, body, httpOptions).pipe(catchError(() => of(null)));
     }
 
     updatePhysician(id: number, physician: Physician): Observable<Physician> {
         let path = this.endpoint + '/' + id;
         let body = JSON.stringify(physician);
-        return this.http.put<Physician>(path, body, httpOptions);
+        return this.http.put<Physician>(path, body, httpOptions).pipe(catchError(() => of(null)));
     }
 
     deletePhysician(id): Observable<Physician> {
         let path = this.endpoint + '/' + id;
-        return this.http.delete<Physician>(path);
+        return this.http.delete<Physician>(path).pipe(catchError(() => of(null)));
     }
 }

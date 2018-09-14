@@ -1,3 +1,126 @@
-<p>
-  physician-detail works!
-</p>
+<div fxLayout="row wrap">
+  <div fxLayout="row wrap"
+    fxFlex="90" fxFlexOffset="5"
+    fxFlex.xs="100" fxFlexOffset.xs="0">
+    <div fxLayout="row wrap"
+      fxFlex="33" fxFlexOffset="33"
+      fxFlex.md="50" fxFlexOffset.md="25"
+      fxFlex.sm="70" fxFlexOffset.sm="15"
+      fxFlex.xs="96" fxFlexOffset.xs="2">
+      <h2 fxFlex="100">{{pageTitle}}</h2>
+      <form fxLayout="row wrap" fxFlex="100" [formGroup]="physicianDetailForm">
+        <!-- Office - Autocomplete -->
+        <mat-form-field fxFlex="100">
+          <input
+            type="text"
+            placeholder="Office"
+            aria-label="Office"
+            matInput
+            formControlName="office"
+            (change)="matchControlValue(this.physicianDetailForm.controls.office)"
+            [matAutocomplete]="officeAuto"
+            required>
+          <mat-error *ngIf="officeValidationRequired()">This field is required</mat-error>
+          <mat-error *ngIf="officeValidationMatch()">Invalid office selected</mat-error>
+          <mat-autocomplete
+            autoActiveFirstOption
+            #officeAuto="matAutocomplete"
+            [displayWith]="displayOffice">
+            <mat-option *ngFor="let office of filteredOffices | async" [value]="office">
+              {{office.title}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <!-- First Name - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>First Name</mat-label>
+          <input matInput
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+                formControlName="firstName"
+                required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- Last Name - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Last Name</mat-label>
+          <input matInput
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+                formControlName="lastName"
+                required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- Empolyment Date - Datepicker -->
+        <mat-form-field fxFlex="100">
+          <input
+            matInput
+            [matDatepicker]="employmentDatePicker"
+            name="employmentDate"
+            placeholder="Employment Date"
+            formControlName="employmentDate"
+            required>
+          <mat-datepicker-toggle matSuffix [for]="employmentDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #employmentDatePicker></mat-datepicker>
+        </mat-form-field>
+        <!-- Email - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Email</mat-label>
+          <input matInput
+                type="text"
+                name="email"
+                placeholder="Email"
+                formControlName="email"
+                required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- Phone - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Phone</mat-label>
+          <input matInput
+                type="text"
+                name="phone"
+                placeholder="Phone"
+                formControlName="phone"
+                required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- Gender - Select -->
+        <mat-form-field fxFlex="50">
+          <mat-select
+            placeholder="Gender"
+            formControlName="gender"
+            name="gender"
+            required>
+            <mat-option value="m">Male</mat-option>
+            <mat-option value="f">Female</mat-option>
+          </mat-select>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </form>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center" fxFlex="100" class="button-row final-page-section">
+      <button mat-stroked-button class="button-row-item" (click)="cancel()">Cancel</button>
+      <button
+        mat-flat-button
+        color="accent"
+        class="button-row-item"
+        (click)="save()">
+        Save
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+  <!-- id: number;
+  officeId: number;
+  firstName: string;
+  lastName: string;
+  employmentDate: string;
+  email: string;
+  phone: string;
+  gender: string; -->

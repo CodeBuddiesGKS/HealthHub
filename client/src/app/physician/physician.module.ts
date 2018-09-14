@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { CoreModule } from '../core/core.module';
@@ -16,6 +16,7 @@ import { PhysicianDetailComponent } from './physician-detail/physician-detail.co
         CommonModule,
         CoreModule,
         FormsModule,
+        ReactiveFormsModule,
         RouterModule,
         SharedModule
     ],

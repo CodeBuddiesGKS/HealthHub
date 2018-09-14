@@ -21,7 +21,8 @@ export class PhysicianComponent implements OnInit {
     public displayedColumns: string[] = [
         'firstName lastName',
         'phone',
-        'email'
+        'email',
+        'options'
     ];
     public dataSource = new MatTableDataSource<Physician>();
 
@@ -46,6 +47,14 @@ export class PhysicianComponent implements OnInit {
         };
         this.dataSource.sort = this.sort;
         this.getPhysicians();
+    }
+
+    deletePhysician(physicianId) {
+        this.physicianService.deletePhysician(physicianId).subscribe(deletedPhysician => {
+            this.messageService.success('Successfully deleted Physician');
+        }, err => {
+            this.messageService.error('Error - Unable to delete Physician')
+        });
     }
 
     getPhysicians() {

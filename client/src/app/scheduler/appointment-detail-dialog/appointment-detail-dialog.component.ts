@@ -46,16 +46,6 @@ export class AppointmentDetailDialogComponent implements OnInit {
         this.id = +this.route.snapshot.paramMap.get('id');
         this.editMode = !!this.id;
 
-        this.filteredDoctors = this.doctorControl.valueChanges.pipe(
-            startWith(''),
-            map(value => this._filter(this.doctors, value))
-        );
-
-        this.filteredPatients = this.patientControl.valueChanges.pipe(
-            startWith(''),
-            map(value => this._filter(this.patients, value))
-        );
-
         if (!this.editMode) {
             this.pageTitle = 'Add Appointment';
             this.appointmentEntity = new Appointment();
@@ -70,6 +60,16 @@ export class AppointmentDetailDialogComponent implements OnInit {
             //         this.messageService.error('Error - Failed to get patient with id: ' + this.id);
             //     });
         }
+
+        this.filteredDoctors = this.doctorControl.valueChanges.pipe(
+            startWith(''),
+            map(value => this._filter(this.doctors, value))
+        );
+
+        this.filteredPatients = this.patientControl.valueChanges.pipe(
+            startWith(''),
+            map(value => this._filter(this.patients, value))
+        );
     }
 
     cancel() {
