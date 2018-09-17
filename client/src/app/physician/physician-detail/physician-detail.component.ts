@@ -46,6 +46,7 @@ export class PhysicianDetailComponent implements OnInit {
     public pageTitle: string;
     public physicianDetailForm: FormGroup;
     public physicianEntity: Physician;
+    public returnUrl: string;
 
     constructor(private messageService: MessageService,
                 private officeService: OfficeService,
@@ -54,6 +55,7 @@ export class PhysicianDetailComponent implements OnInit {
                 private router: Router) { }
 
     ngOnInit() {
+        this.returnUrl = '/home/4';
         this.id = +this.route.snapshot.paramMap.get('id');
         this.editMode = !!this.id;
         this.pageTitle = this.editMode ? 'Edit Physician' : 'Add Physician';
@@ -99,18 +101,17 @@ export class PhysicianDetailComponent implements OnInit {
 
     cancel() {
         // Confirmation Dialog
-        // if yes -> redirect to home (physicians tab...might be tricky)
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl(this.returnUrl);
     }
 
     displayOffice(office?: Office): string | undefined {
       return office ? office.title : undefined;
     }
 
-    matchControlValue(officeControl) {
-        if (typeof officeControl.value === 'string') {
-            let match = this.offices.find(office => office.title === officeControl.value);
-            if (match) officeControl.value = match; 
+    matchControlValue(options: any[], prop: string, control: FormControl) {
+        if (typeof control.value === 'string') {
+            let match = options.find(option => option[prop] === control.value);
+            if (match) control.setValue(match);
         }
     }
 
@@ -133,7 +134,7 @@ export class PhysicianDetailComponent implements OnInit {
                         this.messageService.error('Error - Unable to create physician.');
                     } else {
                         this.messageService.success('Physician was successfully created!');
-                        this.router.navigateByUrl('/home');
+                        this.router.navigateByUrl(this.returnUrl);
                     }
                 });
             } else {
@@ -142,7 +143,7 @@ export class PhysicianDetailComponent implements OnInit {
                         this.messageService.error('Error - Unable to save physician.');
                     } else {
                         this.messageService.success('Physician was successfully saved!');
-                        this.router.navigateByUrl('/home');
+                        this.router.navigateByUrl(this.returnUrl);
                     }
                 });
             }

@@ -27,12 +27,6 @@ import {
 
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
-import { FormControlAutocompleteComponent } from './form-control/form-control-autocomplete/form-control-autocomplete.component';
-import { FormControlDatePickerComponent } from './form-control/form-control-date-picker/form-control-date-picker.component';
-import { FormControlDatetimePickerComponent } from './form-control/form-control-datetime-picker/form-control-datetime-picker.component';
-import { FormControlSelectComponent } from './form-control/form-control-select/form-control-select.component';
-import { FormControlTextComponent } from './form-control/form-control-text/form-control-text.component';
-import { FormControlTimePickerComponent } from './form-control/form-control-time-picker/form-control-time-picker.component';
 import { MessageComponent } from './message/message.component';
 import { StatusMessageComponent } from './message/status-message/status-message.component';
 
@@ -65,17 +59,10 @@ import { StatusMessageComponent } from './message/status-message/status-message.
     ],
     declarations: [
         MessageComponent,
-        StatusMessageComponent,
-        FormControlAutocompleteComponent,
-        FormControlDatePickerComponent,
-        FormControlDatetimePickerComponent,
-        FormControlSelectComponent,
-        FormControlTextComponent,
-        FormControlTimePickerComponent
+        StatusMessageComponent
     ],
     exports: [
         FlexLayoutModule,
-        MessageComponent,
         
         MatAutocompleteModule,
         MatButtonModule,
@@ -96,7 +83,9 @@ import { StatusMessageComponent } from './message/status-message/status-message.
         MatSortModule,
         MatTableModule,
         MatTabsModule,
-        MatToolbarModule
+        MatToolbarModule,
+
+        MessageComponent
     ],
     entryComponents: [
         StatusMessageComponent

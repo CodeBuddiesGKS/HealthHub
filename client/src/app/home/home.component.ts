@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-home',
@@ -6,9 +7,11 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-    constructor() { }
+    public activeTab: number = 0;
+
+    constructor(private route: ActivatedRoute) { }
 
     ngOnInit() {
+        this.activeTab = +this.route.snapshot.paramMap.get('activeTab');
     }
-
 }

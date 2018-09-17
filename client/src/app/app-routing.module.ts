@@ -10,6 +10,7 @@ import { PhysicianDetailComponent } from './physician/physician-detail/physician
 const routes: Routes = [
     { path: "", redirectTo: "/home", pathMatch: "full" },
     { path: "home", component: HomeComponent },
+    { path: "home/:activeTab", component: HomeComponent },
     { path: "officeDetail", component: OfficeDetailComponent },
     { path: "officeDetail/:id", component: OfficeDetailComponent },
     { path: "patientDetail", component: PatientDetailComponent },

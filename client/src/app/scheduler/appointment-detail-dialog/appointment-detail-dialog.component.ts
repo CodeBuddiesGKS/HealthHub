@@ -14,6 +14,7 @@ export class Appointment {
         this.patientId = null;
         this.description = "";
     }
+    id: number;
     startDatetime: string;
     endDatetime: string;
     resourceId: number;

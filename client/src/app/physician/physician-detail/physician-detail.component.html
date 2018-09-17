@@ -17,7 +17,7 @@
             aria-label="Office"
             matInput
             formControlName="office"
-            (change)="matchControlValue(this.physicianDetailForm.controls.office)"
+            (change)="matchControlValue(offices, 'title', this.physicianDetailForm.controls.office)"
             [matAutocomplete]="officeAuto"
             required>
           <mat-error *ngIf="officeValidationRequired()">This field is required</mat-error>
