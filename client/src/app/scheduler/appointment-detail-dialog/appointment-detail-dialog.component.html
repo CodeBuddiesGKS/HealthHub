@@ -1,20 +1,21 @@
-<div fxLayout="row wrap" *ngIf="appointmentEntity">
+<div fxLayout="row wrap">
   <div fxLayout="row wrap"
     fxFlex="90" fxFlexOffset="5"
     fxFlex.xs="100" fxFlexOffset.xs="0">
     <h2 fxFlex="100">{{pageTitle}}</h2>
-    <form fxLayout="row wrap" fxFlex="100">
+    <form fxLayout="row wrap" fxFlex="100" [formGroup]="appointmentDetailForm">
+      <!-- Start Date - Datetime -->
       <mat-form-field fxFlex="48" fxFlex.xs="100">
         <mat-label>Start Date / Time</mat-label>
         <input
           matInput
           type="datetime-local"
-          name="startDatetime"
-          [(ngModel)]="appointmentEntity.startDatetime"
+          name="startDate"
+          formControlName="startDate"
           required>
         <mat-error>This field is required</mat-error>
       </mat-form-field>
-
+      <!-- End Date - Datetime -->
       <mat-form-field
         fxFlex="50" fxFlexOffset="2"
         fxFlex.xs="100" fxFlexOffset.xs="0">
@@ -22,49 +23,63 @@
         <input
           matInput
           type="datetime-local"
-          name="endDatetime"
-          [(ngModel)]="appointmentEntity.endDatetime"
+          name="endDate"
+          formControlName="endDate"
           required>
         <mat-error>This field is required</mat-error>
       </mat-form-field>
-
+      <!-- Physician - Autocomplete -->
       <mat-form-field fxFlex="100">
         <input
           type="text"
-          placeholder="Doctor"
-          aria-label="Doctor"
+          placeholder="Physician"
+          aria-label="Physician"
           matInput
-          [formControl]="doctorControl"
-          [matAutocomplete]="doctorAuto"
+          formControlName="physician"
+          (change)="matchControlValue(physicians, 'firstName', this.appointmentDetailForm.controls.physician)"
+          [matAutocomplete]="physicianAuto"
           required>
-        <mat-error>This field is required</mat-error>
-        <mat-autocomplete autoActiveFirstOption #doctorAuto="matAutocomplete">
-          <mat-option *ngFor="let doctor of filteredDoctors | async" [value]="doctor">
-            {{doctor}}
+        <mat-error *ngIf="physicianValidationRequired()">This field is required</mat-error>
+        <mat-error *ngIf="physicianValidationMatch()">Invalid physician selected</mat-error>
+        <mat-autocomplete
+          autoActiveFirstOption
+          #physicianAuto="matAutocomplete"
+          [displayWith]="displayPhysician">
+          <mat-option *ngFor="let physician of filteredPhysicians | async" [value]="physician">
+            {{physician.firstName + ' ' + physician.lastName}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-
+      <!-- Patient - Autocomplete -->
       <mat-form-field fxFlex="100">
         <input
           type="text"
           placeholder="Patient"
           aria-label="Patient"
           matInput
-          [formControl]="patientControl"
+          formControlName="patient"
+          (change)="matchControlValue(patients, 'firstName', this.appointmentDetailForm.controls.patient)"
           [matAutocomplete]="patientAuto"
           required>
-        <mat-error>This field is required</mat-error>
-        <mat-autocomplete autoActiveFirstOption #patientAuto="matAutocomplete">
+        <mat-error *ngIf="patientValidationRequired()">This field is required</mat-error>
+        <mat-error *ngIf="patientValidationMatch()">Invalid patient selected</mat-error>
+        <mat-autocomplete
+          autoActiveFirstOption
+          #patientAuto="matAutocomplete"
+          [displayWith]="displayPatient">
           <mat-option *ngFor="let patient of filteredPatients | async" [value]="patient">
-            {{patient}}
+            {{patient.firstName + ' ' + patient.lastName}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-
+      <!-- Description - text -->
       <mat-form-field fxFlex="100">
         <mat-label>Description</mat-label>
-        <input matInput type="text" name="description" placeholder="Description" [(ngModel)]="appointmentEntity.description"
+        <input matInput
+          type="text"
+          name="description"
+          placeholder="Description"
+          formControlName="description"
           required>
         <mat-error>This field is required</mat-error>
       </mat-form-field>

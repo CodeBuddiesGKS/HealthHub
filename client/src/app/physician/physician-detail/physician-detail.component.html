@@ -62,6 +62,7 @@
             placeholder="Employment Date"
             formControlName="employmentDate"
             required>
+          <mat-error>This field is required</mat-error>
           <mat-datepicker-toggle matSuffix [for]="employmentDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #employmentDatePicker></mat-datepicker>
         </mat-form-field>

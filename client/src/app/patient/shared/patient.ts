@@ -1,4 +1,18 @@
 export class Patient {
+    constructor() {
+        this.id = null;
+        this.firstName = "";
+        this.lastName = "";
+        this.birthDate = "";
+        this.email = "";
+        this.phone = "";
+        this.address1 = "";
+        this.address2 = "";
+        this.address3 = "";
+        this.city = "";
+        this.state = "";
+        this.zipcode = null;
+    }
     id: number;
     firstName: string;
     lastName: string;
@@ -12,48 +26,3 @@ export class Patient {
     state: string;
     zipcode: number;
 }
-
-export const PATIENTS: Patient[] = [
-    {
-        id: 1,
-        firstName: "Mike",
-        lastName: "Jefferson",
-        birthDate: "01/01/2001",
-        email: "mj@email.com",
-        phone: "123-123-1234",
-        address1: "123 Tornado St.",
-        address2: "Apt. 1",
-        address3: "P.O. Box #321",
-        city: "Dustville",
-        state: "NM",
-        zipcode: 12345
-    },
-    {
-        id: 2,
-        firstName: "Janet",
-        lastName: "Jefferson",
-        birthDate: "01/01/2002",
-        email: "mj@email.com",
-        phone: "123-123-1234",
-        address1: "123 Tornado St.",
-        address2: "Apt. 1",
-        address3: "P.O. Box #321",
-        city: "Dustville",
-        state: "NM",
-        zipcode: 12345
-    },
-    {
-        id: 3,
-        firstName: "Tito",
-        lastName: "Jefferson",
-        birthDate: "01/01/2000",
-        email: "mj@email.com",
-        phone: "123-123-1234",
-        address1: "123 Tornado St.",
-        address2: "Apt. 1",
-        address3: "P.O. Box #321",
-        city: "Dustville",
-        state: "NM",
-        zipcode: 12345
-    }
-];

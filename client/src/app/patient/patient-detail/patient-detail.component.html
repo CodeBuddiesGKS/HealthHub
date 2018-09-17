@@ -1,126 +1,135 @@
-<div fxLayout="row wrap" *ngIf="patientEntity">
-  <div fxLayout="row wrap" fxFlex="90" fxFlexOffset="5" fxFlex.xs="100" fxFlexOffset.xs="0">
-    <div fxLayout="row"
-         fxFlex="33" fxFlexOffset="33"
-         fxFlex.md="50" fxFlexOffset.md="25"
-         fxFlex.sm="70" fxFlexOffset.sm="15"
-         fxFlex.xs="96" fxFlexOffset.xs="2">
-        <h2>{{pageTitle}}</h2>
+<div fxLayout="row wrap">
+  <div fxLayout="row wrap"
+    fxFlex="90" fxFlexOffset="5"
+    fxFlex.xs="100" fxFlexOffset.xs="0">
+    <div fxLayout="row wrap"
+      fxFlex="33" fxFlexOffset="33"
+      fxFlex.md="50" fxFlexOffset.md="25"
+      fxFlex.sm="70" fxFlexOffset.sm="15"
+      fxFlex.xs="96" fxFlexOffset.xs="2">
+      <h2 fxFlex="100">{{pageTitle}}</h2>
+      <form fxLayout="row wrap" fxFlex="100" [formGroup]="patientDetailForm">
+        <!-- First Name - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>First Name</mat-label>
+          <input matInput
+            type="text"
+            name="firstName"
+            placeholder="First Name"
+            formControlName="firstName"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- Last Name - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Last Name</mat-label>
+          <input matInput
+            type="text"
+            name="lastName"
+            placeholder="Last Name"
+            formControlName="lastName"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- Date of Birth - Datepicker -->
+        <mat-form-field fxFlex="100">
+          <input
+            matInput
+            [matDatepicker]="birthDatePicker"
+            name="birthDate"
+            placeholder="Date of Birth"
+            formControlName="birthDate"
+            required>
+          <mat-error>This field is required</mat-error>
+          <mat-datepicker-toggle matSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #birthDatePicker></mat-datepicker>
+        </mat-form-field>
+        <!-- Email - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Email</mat-label>
+          <input matInput
+            type="text"
+            name="email"
+            placeholder="Email"
+            formControlName="email"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- Phone - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Phone</mat-label>
+          <input matInput
+            type="text"
+            name="phone"
+            placeholder="Phone"
+            formControlName="phone"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- Address - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Address</mat-label>
+          <input matInput
+            type="text"
+            name="address1"
+            placeholder="Address"
+            formControlName="address1"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- Address2 - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Address 2</mat-label>
+          <input matInput
+            type="text"
+            name="address2"
+            placeholder="Address 2"
+            formControlName="address2">
+        </mat-form-field>
+        <!-- Address3 - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Address 3</mat-label>
+          <input matInput
+            type="text"
+            name="address3"
+            placeholder="Address 3"
+            formControlName="address3">
+        </mat-form-field>
+        <!-- City - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>City</mat-label>
+          <input matInput
+            type="text"
+            name="city"
+            placeholder="City"
+            formControlName="city"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- State - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>State</mat-label>
+          <input matInput
+            type="text"
+            name="state"
+            placeholder="State"
+            formControlName="state"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- Zipcode - number -->
+        <mat-form-field fxFlex="50">
+          <mat-label>Zipcode</mat-label>
+          <input matInput
+            type="number"
+            name="zipcode"
+            placeholder="Zipcode"
+            formControlName="zipcode"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </form>
     </div>
-    <form fxLayout="row wrap"
-          fxFlex="33" fxFlexOffset="33"
-          fxFlex.md="50" fxFlexOffset.md="25"
-          fxFlex.sm="70" fxFlexOffset.sm="15"
-          fxFlex.xs="96" fxFlexOffset.xs="2">
-      <mat-form-field fxFlex="100">
-        <mat-label>First Name</mat-label>
-        <input matInput
-               type="text"
-               name="firstName"
-               placeholder="First Name"
-               [(ngModel)]="patientEntity.firstName"
-               required>
-        <mat-error>This field is required</mat-error>
-      </mat-form-field>
-      <mat-form-field fxFlex="100">
-        <mat-label>Last Name</mat-label>
-        <input matInput
-               type="text"
-               name="lastName"
-               placeholder="Last Name"
-               [(ngModel)]="patientEntity.lastName"
-               required>
-        <mat-error>This field is required</mat-error>
-      </mat-form-field>
-      <mat-form-field fxFlex="100">
-        <mat-label>Date of Birth</mat-label>
-        <input matInput
-               type="text"
-               name="birthDate"
-               placeholder="yyyy-mm-dd"
-               [(ngModel)]="patientEntity.birthDate"
-               required>
-        <mat-error>This field is required</mat-error>
-      </mat-form-field>
-      <mat-form-field fxFlex="100">
-        <mat-label>Email</mat-label>
-        <input matInput
-               type="text"
-               name="email"
-               placeholder="Email"
-               [(ngModel)]="patientEntity.email"
-               required>
-        <mat-error>This field is required</mat-error>
-      </mat-form-field>
-      <mat-form-field fxFlex="100">
-        <mat-label>Phone</mat-label>
-        <input matInput
-               type="text"
-               name="phone"
-               placeholder="Phone"
-               [(ngModel)]="patientEntity.phone"
-               required>
-        <mat-error>This field is required</mat-error>
-      </mat-form-field>
-      <mat-form-field fxFlex="100">
-        <mat-label>Address</mat-label>
-        <input matInput
-               type="text"
-               name="address1"
-               placeholder="Address"
-               [(ngModel)]="patientEntity.address1"
-               required>
-        <mat-error>This field is required</mat-error>
-      </mat-form-field>
-      <mat-form-field fxFlex="100">
-        <mat-label>Address 2</mat-label>
-        <input matInput
-               type="text"
-               name="address2"
-               placeholder="Address 2"
-               [(ngModel)]="patientEntity.address2">
-        <!-- <mat-error>This field is required</mat-error> -->
-      </mat-form-field>
-      <mat-form-field fxFlex="100">
-        <mat-label>Address 3</mat-label>
-        <input matInput
-               type="text"
-               name="address3"
-               placeholder="Address 3"
-               [(ngModel)]="patientEntity.address3">
-        <!-- <mat-error>This field is required</mat-error> -->
-      </mat-form-field>
-      <mat-form-field fxFlex="100">
-        <mat-label>City</mat-label>
-        <input matInput
-               type="text"
-               name="city"
-               placeholder="City"
-               [(ngModel)]="patientEntity.city"
-               required>
-        <mat-error>This field is required</mat-error>
-      </mat-form-field>
-      <mat-form-field fxFlex="100">
-        <mat-label>State</mat-label>
-        <input matInput
-               type="text"
-               name="state"
-               placeholder="State"
-               [(ngModel)]="patientEntity.state"
-               required>
-        <mat-error>This field is required</mat-error>
-      </mat-form-field>
-      <mat-form-field fxFlex="100">
-        <mat-label>Zipcode</mat-label>
-        <input matInput
-               type="number"
-               name="zipcode"
-               placeholder="Zipcode"
-               [(ngModel)]="patientEntity.zipcode"
-               required>
-        <mat-error>This field is required</mat-error>
-      </mat-form-field>
-    </form>
     <div fxLayout="row" fxLayoutAlign="center" fxFlex="100" class="button-row final-page-section">
       <button mat-stroked-button class="button-row-item" (click)="cancel()">Cancel</button>
       <button mat-flat-button color="accent" class="button-row-item" (click)="save()">Save</button>

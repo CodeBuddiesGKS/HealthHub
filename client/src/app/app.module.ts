@@ -33,7 +33,7 @@ import { AppComponent } from './app.component';
     OfficeModule.forRoot(),
     PatientModule.forRoot(),
     PhysicianModule.forRoot(),
-    SchedulerModule,
+    SchedulerModule.forRoot(),
     SharedModule,
     TestModule.forRoot(),
   ],

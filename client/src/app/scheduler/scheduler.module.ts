@@ -1,8 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SharedModule } from '../shared/shared.module';
+
+import { AppointmentService } from './shared/appointment.service';
 
 import { AppointmentDetailDialogComponent } from './appointment-detail-dialog/appointment-detail-dialog.component';
 import { SchedulerComponent } from './scheduler.component';
@@ -25,4 +27,13 @@ import { SchedulerComponent } from './scheduler.component';
         AppointmentDetailDialogComponent
     ]
 })
-export class SchedulerModule { }
+export class SchedulerModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: SchedulerModule,
+            providers: [
+                AppointmentService
+            ]
+        }
+    }
+}

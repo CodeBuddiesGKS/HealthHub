@@ -4,12 +4,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,11 +20,9 @@ public class Appointment {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Physician.class, optional = false)
-    @JoinColumn(name = "physician_id", nullable = false)
+	@Column(name = "physician_id")
 	private Long physicianId;
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Physician.class, optional = false)
-    @JoinColumn(name = "patient_id", nullable = false)
+	@Column(name = "patient_id")
 	private Long patientId;
 	@Column(name = "start_date", columnDefinition= "TIMESTAMP WITH TIME ZONE")
 	private Date startDate;

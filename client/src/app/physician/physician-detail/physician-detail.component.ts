@@ -12,15 +12,14 @@ import { MessageService } from '../../core/message.service';
 import { OfficeService } from '../../office/shared/office.service';
 import { PhysicianService } from '../shared/physician.service';
 
-import { Observable, forkJoin, of } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-
 import { Office } from '../../office/shared/office';
 import { Physician } from '../shared/physician';
 
+import { Observable, forkJoin, of } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import * as moment from 'moment';
 
-export function officeMatchValidator(officeList): ValidatorFn {
+function autocompleteMatchValidator(officeList): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
         if (!officeList) return null;
 
@@ -39,9 +38,9 @@ export function officeMatchValidator(officeList): ValidatorFn {
   styleUrls: ['./physician-detail.component.css']
 })
 export class PhysicianDetailComponent implements OnInit {
-    public id: number;
     public editMode: boolean;
     public filteredOffices: Observable<Office[]>;
+    public id: number;
     public offices: Office[];
     public pageTitle: string;
     public physicianDetailForm: FormGroup;
@@ -90,7 +89,7 @@ export class PhysicianDetailComponent implements OnInit {
                 this.physicianDetailForm.controls.gender.setValue(physician.gender);
             }
 
-            this.physicianDetailForm.controls.office.setValidators([Validators.required, officeMatchValidator(this.offices)]);
+            this.physicianDetailForm.controls.office.setValidators([Validators.required, autocompleteMatchValidator(this.offices)]);
             this.filteredOffices = this.physicianDetailForm.controls.office.valueChanges.pipe(
                 startWith(''),
                 map<any, any>(value => typeof value === 'string' ? value : value.title),
@@ -107,7 +106,7 @@ export class PhysicianDetailComponent implements OnInit {
     displayOffice(office?: Office): string | undefined {
       return office ? office.title : undefined;
     }
-
+    
     matchControlValue(options: any[], prop: string, control: FormControl) {
         if (typeof control.value === 'string') {
             let match = options.find(option => option[prop] === control.value);
@@ -115,6 +114,19 @@ export class PhysicianDetailComponent implements OnInit {
         }
     }
 
+    officeValidationRequired() {
+        return this.physicianDetailForm.controls.office.invalid
+            && (this.physicianDetailForm.controls.office.dirty || this.physicianDetailForm.controls.office.touched)
+            && this.physicianDetailForm.controls.office.errors.required;
+    }
+
+    officeValidationMatch() {
+        return this.physicianDetailForm.controls.office.invalid
+            && (this.physicianDetailForm.controls.office.dirty || this.physicianDetailForm.controls.office.touched)
+            && this.physicianDetailForm.controls.office.value != ''
+            && this.physicianDetailForm.controls.office.errors.invalidOffice;
+    }
+    
     save() {
         if (this.physicianDetailForm.valid) {
             this.physicianEntity = new Physician();
@@ -126,7 +138,6 @@ export class PhysicianDetailComponent implements OnInit {
             this.physicianEntity.email = this.physicianDetailForm.controls.email.value;
             this.physicianEntity.phone = this.physicianDetailForm.controls.phone.value;
             this.physicianEntity.gender = this.physicianDetailForm.controls.gender.value;
-            console.log(this.physicianEntity);
 
             if (!this.editMode) {
                 this.physicianService.createPhysician(this.physicianEntity).subscribe(physician => {
@@ -155,19 +166,6 @@ export class PhysicianDetailComponent implements OnInit {
             // Use this if nested
             // this.validateAllFormFields(this.physicianDetailForm);
         }
-    }
-
-    officeValidationRequired() {
-        return this.physicianDetailForm.controls.office.invalid
-            && (this.physicianDetailForm.controls.office.dirty || this.physicianDetailForm.controls.office.touched)
-            && this.physicianDetailForm.controls.office.errors.required;
-    }
-
-    officeValidationMatch() {
-        return this.physicianDetailForm.controls.office.invalid
-            && (this.physicianDetailForm.controls.office.dirty || this.physicianDetailForm.controls.office.touched)
-            && this.physicianDetailForm.controls.office.value != ''
-            && this.physicianDetailForm.controls.office.errors.invalidOffice;
     }
 
     // private validateAllFormFields(formGroup: FormGroup) {
