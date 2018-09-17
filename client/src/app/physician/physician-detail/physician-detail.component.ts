@@ -72,8 +72,8 @@ export class PhysicianDetailComponent implements OnInit {
             this.officeService.getOffices(),
             this.editMode ? this.physicianService.getPhysician(this.id) : of(null)
         ).subscribe(([offices, physician]) => {
-            if (!offices) this.messageService.error('Error - Unable to get office list');
-            if (!physician && this.editMode) this.messageService.error('Error - Unable to get physician with id: ' + this.id);
+            if (!offices) this.messageService.error('Error - Unable to get offices.');
+            if (!physician && this.editMode) this.messageService.error('Error - Unable to get physician.');
             
             this.offices = offices;
 
@@ -130,7 +130,7 @@ export class PhysicianDetailComponent implements OnInit {
             if (!this.editMode) {
                 this.physicianService.createPhysician(this.physicianEntity).subscribe(physician => {
                     if (!physician) {
-                        this.messageService.error('Error - Unable to create physician');
+                        this.messageService.error('Error - Unable to create physician.');
                     } else {
                         this.messageService.success('Physician was successfully created!');
                         this.router.navigateByUrl('/home');
@@ -139,7 +139,7 @@ export class PhysicianDetailComponent implements OnInit {
             } else {
                 this.physicianService.updatePhysician(this.id, this.physicianEntity).subscribe(physician => {
                     if (!physician) {
-                        this.messageService.error('Error - Unable to save physician');
+                        this.messageService.error('Error - Unable to save physician.');
                     } else {
                         this.messageService.success('Physician was successfully saved!');
                         this.router.navigateByUrl('/home');

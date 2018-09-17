@@ -51,17 +51,21 @@ export class PhysicianComponent implements OnInit {
 
     deletePhysician(physicianId) {
         this.physicianService.deletePhysician(physicianId).subscribe(deletedPhysician => {
-            this.messageService.success('Successfully deleted Physician');
-        }, err => {
-            this.messageService.error('Error - Unable to delete Physician')
+            if (!deletedPhysician) {
+                this.messageService.error('Error - Unable to delete physician.');
+            } else {
+                this.messageService.success('Physician was successfully deleted!');
+            }
         });
     }
 
     getPhysicians() {
-        this.physicianService.getPhysicians().subscribe(data => {
-            this.dataSource.data = data;
-        }, err => {
-            this.messageService.error('Error - Unable to get Physicians List');
+        this.physicianService.getPhysicians().subscribe(physicians => {
+            if (!physicians) {
+                this.messageService.error('Error - Unable to get physicians.');
+            } else {
+                this.dataSource.data = physicians;
+            }
         });
     }
 

@@ -52,13 +52,6 @@ export class AppointmentDetailDialogComponent implements OnInit {
         } else {
             this.pageTitle = 'Edit Appointment';
             this.appointmentEntity = new Appointment();
-
-            // this.patientService.getPatient(this.id)
-            //     .subscribe(patient => {
-            //         this.patientEntity = patient;
-            //     }, error => {
-            //         this.messageService.error('Error - Failed to get patient with id: ' + this.id);
-            //     });
         }
 
         this.filteredDoctors = this.doctorControl.valueChanges.pipe(
@@ -78,23 +71,6 @@ export class AppointmentDetailDialogComponent implements OnInit {
 
     save() {
         console.log(this.appointmentEntity);
-        // if (!this.editMode) {
-        //     this.patientService.createPatient(this.patientEntity)
-        //         .subscribe(patient => {
-        //             this.messageService.success('Patient was successfully created!');
-        //             this.router.navigateByUrl('/home');
-        //         }, error => {
-        //             this.messageService.error('Error - Unable to create patient');
-        //         });
-        // } else {
-        //     this.patientService.updatePatient(this.id, this.patientEntity)
-        //         .subscribe(patient => {
-        //             this.messageService.success('Patient was successfully saved!');
-        //             this.router.navigateByUrl('/home');
-        //         }, error => {
-        //             this.messageService.error('Error - Unable to save patient');
-        //         });
-        // }
     }
 
     private _filter(arr: any[], value: string): string[] {

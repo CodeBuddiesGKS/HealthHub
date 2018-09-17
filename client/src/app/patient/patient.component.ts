@@ -51,17 +51,21 @@ export class PatientComponent implements OnInit {
 
     deletePatient(patientId) {
         this.patientService.deletePatient(patientId).subscribe(deletedPatient => {
-            this.messageService.success('Successfully deleted Patient');
-        }, err => {
-            this.messageService.error('Error - Unable to delete Patient')
+            if (!deletedPatient) {
+                this.messageService.error('Error - Unable to delete patient.');
+            } else {
+                this.messageService.success('Patient was successfully deleted!');
+            }
         });
     }
 
     getPatients() {
-        this.patientService.getPatients().subscribe(data => {
-            this.dataSource.data = data;
-        }, err => {
-            this.messageService.error('Error - Unable to get Physicians List')
+        this.patientService.getPatients().subscribe(patients => {
+            if (!patients) {
+                this.messageService.error('Error - Unable to get patients.');
+            } else {
+                this.dataSource.data = patients;
+            }
         });
     }
 

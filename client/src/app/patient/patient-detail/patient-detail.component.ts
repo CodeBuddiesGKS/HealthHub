@@ -31,12 +31,13 @@ export class PatientDetailComponent implements OnInit {
             this.patientEntity = new Patient();
         } else {
             this.pageTitle = 'Edit Patient';
-            this.patientService.getPatient(this.id)
-                .subscribe(patient => {
+            this.patientService.getPatient(this.id).subscribe(patient => {
+                if (!patient) {
+                    this.messageService.error('Error - Unable to get patient.');
+                } else {
                     this.patientEntity = patient;
-                }, error => {
-                    this.messageService.error('Error - Failed to get patient with id: ' + this.id);
-                });
+                }
+            });
         }
     }
 
@@ -50,17 +51,21 @@ export class PatientDetailComponent implements OnInit {
     save() {
         if (!this.editMode) {
             this.patientService.createPatient(this.patientEntity).subscribe(patient => {
-                this.messageService.success('Patient was successfully created!');
-                this.router.navigateByUrl('/home');
-            }, error => {
-                this.messageService.error('Error - Unable to create patient');
+                if (!patient) {
+                    this.messageService.error('Error - Unable to create patient.');
+                } else {
+                    this.messageService.success('Patient was successfully created!');
+                    this.router.navigateByUrl('/home');
+                }
             });
         } else {
             this.patientService.updatePatient(this.id, this.patientEntity).subscribe(patient => {
-                this.messageService.success('Patient was successfully saved!');
-                this.router.navigateByUrl('/home');
-            }, error => {
-                this.messageService.error('Error - Unable to save patient');
+                if (!patient) {
+                    this.messageService.error('Error - Unable to save patient.');
+                } else {
+                    this.messageService.success('Patient was successfully saved!');
+                    this.router.navigateByUrl('/home');
+                }
             });
         }
     }

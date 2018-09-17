@@ -27,14 +27,16 @@ export class OfficeComponent implements OnInit {
 
     getOffices() {
         this.officeService.getOffices().subscribe(offices => {
-            this.offices = offices;
-            this.offices.forEach(office => {
-                office.props = {
-                    physiciansButtonLabel: 'Show Physicians'
-                };
-            });
-        }, err => {
-            this.messageService.error('Error - Unable to get Office List');
+            if (!offices) {
+                this.messageService.error('Error - Unable to get offices.');
+            } else {
+                this.offices = offices;
+                this.offices.forEach(office => {
+                    office.props = {
+                        physiciansButtonLabel: 'Show Physicians'
+                    };
+                });
+            }
         });
     }
 
@@ -47,9 +49,11 @@ export class OfficeComponent implements OnInit {
         office.props.physiciansButtonLabel = office.openPhysiciansList ? 'Hide Physicians' : 'Show Physicians'
         if (!office.physicians) {
             this.physicianService.getPhysiciansByOfficeId(office.id).subscribe(physicians => {
-                office.physicians = physicians;
-            }, err => {
-                this.messageService.error('Error - could not get Physicians List');
+                if (!physicians) {
+                    this.messageService.error('Error - could not get physicians.');
+                } else {
+                    office.physicians = physicians;
+                }
             });
         }
     }
