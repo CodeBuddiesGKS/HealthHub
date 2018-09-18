@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.magenic.healthhub.model.Appointment;
+import com.magenic.healthhub.model.Physician;
 import com.magenic.healthhub.repository.AppointmentRepository;
 
 @RestController
@@ -34,6 +35,18 @@ public class AppointmentController {
 	@ResponseStatus(HttpStatus.OK)
 	public Appointment getAppointment(@PathVariable("id") long id) {
 		return appointmentRepository.getOne(id);
+	}
+
+	@GetMapping("/physicianId/{physicianId}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Appointment> getAppointmentByPhysicianId(@PathVariable("physicianId") Long physicianId) {
+		return appointmentRepository.findByPhysicianId(physicianId);
+	}
+
+	@GetMapping("/patientId/{patientId}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Appointment> getAppointmentByPatientId(@PathVariable("patientId") Long patientId) {
+		return appointmentRepository.findByPatientId(patientId);
 	}
 	
 	@PostMapping

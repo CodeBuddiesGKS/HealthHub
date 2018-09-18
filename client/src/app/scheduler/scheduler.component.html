@@ -28,19 +28,31 @@
   </div>
 
   <div fxLayout="row"
-       fxFlex="90"
-       fxFlexOffset="5"
-       class="mat-elevation-z8 final-page-section"
-       style="height: 700px;">
+    fxFlex="90"
+    fxFlexOffset="5"
+    class="mat-elevation-z8 final-page-section"
+    style="height: 700px;">
     <div fxLayout="column" fxFlex="250px">
-      <div fxLayout="column" fxFlex="50">
+      <!-- <div fxLayout="column" fxFlex="50">
         <mat-toolbar fxFlex="60px">
-          <span>Offices</span>
+          <span>Physicians</span>
         </mat-toolbar>
         <div fxFlex="calc(100-60px)" style="overflow-y: auto;">
-          <mat-selection-list #officeList (selectionChange)="filterResources($event)">
-            <mat-list-option checkboxPosition="before" [value]="office" *ngFor="let office of offices">
-              {{office.name}}
+          <mat-selection-list #physicianList (selectionChange)="selectSchedules($event)">
+            <mat-list-option checkboxPosition="before" [value]="office" *ngFor="let office of officesWithNestedPhysicians">
+              {{office.title}}
+            </mat-list-option>
+          </mat-selection-list>
+        </div>
+      </div> -->
+      <div fxLayout="column" fxFlex="50">
+        <mat-toolbar fxFlex="60px">
+          <span>Physicians</span>
+        </mat-toolbar>
+        <div fxFlex="calc(100-60px)" style="overflow-y: auto;">
+          <mat-selection-list #physicianList (selectionChange)="filterPhysicians($event)">
+            <mat-list-option checkboxPosition="before" [value]="physician" *ngFor="let physician of physicians">
+              {{physician.firstName + ' ' + physician.lastName}}
             </mat-list-option>
           </mat-selection-list>
         </div>
@@ -48,13 +60,13 @@
 
       <div fxLayout="column" fxFlex="50">
         <mat-toolbar fxFlex="60px">
-          <span>Resources</span>
+          <span>Patients</span>
         </mat-toolbar>
         <div fxFlex="calc(100-60px)" style="overflow-y: auto;">
-          <mat-selection-list #resourceList (selectionChange)="selectResources($event)">
-            <mat-list-option checkboxPosition="before" [value]="resource" *ngFor="let resource of filteredResources">
+          <mat-selection-list #patientList (selectionChange)="filterPatients($event)">
+            <mat-list-option checkboxPosition="before" [value]="patient" *ngFor="let patient of patients">
               <img matListAvatar src="favicon.ico" alt="Avatar Icon">
-              <h3 matLine>{{resource.name}}</h3>
+              <h3 matLine>{{patient.firstName + ' ' + patient.lastName}}</h3>
             </mat-list-option>
           </mat-selection-list>
         </div>
@@ -71,13 +83,13 @@
           <span style="float: right; border-right: #00e676 solid 2px; color: black;">{{hour}}</span>
         </div>
 
-        <div *ngFor="let resource of selectedResources; let i = index"
+        <div *ngFor="let schedule of selectedSchedules; let i = index"
              [style.grid-column-start]="i + 2"
              [style.grid-column-end]="i + 3"
              style="grid-row: 1 / -1; background-color: #75a7ff;">
           <mat-toolbar color="primary"
               style="grid-row: 1 / 2; height: 60px; position: sticky; top: 0; z-index: 2;">
-            <span style="margin: 0 auto;">{{resource.name}}</span>
+            <span style="margin: 0 auto;">{{schedule.firstName + ' ' + schedule.lastName}}</span>
           </mat-toolbar>
 
           <mat-card fxLayout="row wrap" class="appointment">

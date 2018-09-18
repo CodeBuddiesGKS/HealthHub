@@ -24,6 +24,16 @@ export class AppointmentService {
         let path = this.endpoint + '/' + id;
         return this.http.get<Appointment>(path).pipe(catchError(() => of(null)));
     }
+    
+    getAppointmentsByPatientId(patientId) {
+        let path = this.endpoint + '/patientId/' + patientId;
+        return this.http.get<Appointment[]>(path).pipe(catchError(() => of(null)));
+    }
+    
+    getAppointmentsByPhysicianId(physicianId) {
+        let path = this.endpoint + '/physicianId/' + physicianId;
+        return this.http.get<Appointment[]>(path).pipe(catchError(() => of(null)));
+    }
 
     createAppointment(appointment: Appointment): Observable<Appointment> {
         let body = JSON.stringify(appointment);

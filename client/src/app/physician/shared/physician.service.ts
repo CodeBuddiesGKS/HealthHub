@@ -20,16 +20,16 @@ export class PhysicianService {
         return this.http.get<Physician[]>(this.endpoint).pipe(catchError(() => of(null)));
     }
     
-    getPhysiciansByOfficeId(officeId) {
-        let path = this.endpoint + '/officeId/' + officeId;
-        return this.http.get<Physician[]>(path).pipe(catchError(() => of(null)));
-    }
-
     getPhysician(id: number): Observable<Physician> {
         let path = this.endpoint + '/' + id;
         return this.http.get<Physician>(path).pipe(catchError(() => of(null)));
     }
-
+    
+    getPhysiciansByOfficeId(officeId) {
+        let path = this.endpoint + '/officeId/' + officeId;
+        return this.http.get<Physician[]>(path).pipe(catchError(() => of(null)));
+    }
+    
     createPhysician(physician: Physician): Observable<Physician> {
         let body = JSON.stringify(physician);
         return this.http.post<Physician>(this.endpoint, body, httpOptions).pipe(catchError(() => of(null)));
