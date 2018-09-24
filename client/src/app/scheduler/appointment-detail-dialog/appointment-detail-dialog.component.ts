@@ -6,6 +6,7 @@ import {
     FormGroup,
     Validators
 } from '@angular/forms';
+import { MatDialogRef } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
 import { AppointmentService } from '../shared/appointment.service';
@@ -50,6 +51,7 @@ export class AppointmentDetailDialogComponent implements OnInit {
     public physicians: Physician[];
 
     constructor(private appointmentService: AppointmentService,
+                private dialogRef: MatDialogRef<AppointmentDetailDialogComponent>,
                 private messageService: MessageService,
                 private patientService: PatientService,
                 private physicianService: PhysicianService,
@@ -61,8 +63,8 @@ export class AppointmentDetailDialogComponent implements OnInit {
         this.pageTitle = this.editMode ? 'Edit Appointment' : 'Add Appointment';
         
         this.appointmentDetailForm = new FormGroup({
-            startDate: new FormControl(moment().format(moment.HTML5_FMT.DATETIME_LOCAL)),
-            endDate: new FormControl(moment().add(1, 'hour').format(moment.HTML5_FMT.DATETIME_LOCAL)),
+            startDate: new FormControl(moment().add(1, 'hour').startOf('hour').format(moment.HTML5_FMT.DATETIME_LOCAL)),
+            endDate: new FormControl(moment().add(1, 'hour').endOf('hour').format(moment.HTML5_FMT.DATETIME_LOCAL)),
             physician: new FormControl(null),
             patient: new FormControl(null),
             description: new FormControl("")
@@ -83,8 +85,8 @@ export class AppointmentDetailDialogComponent implements OnInit {
             if (appointment) {
                 let patientMatch = this.patients.find(patient => patient.id === appointment.patientId);
                 let physicianMatch = this.physicians.find(physician => physician.id === appointment.physicianId);
-                this.appointmentDetailForm.controls.startDate.setValue(moment(appointment.startDate));
-                this.appointmentDetailForm.controls.endDate.setValue(moment(appointment.endDate));
+                this.appointmentDetailForm.controls.startDate.setValue(moment(appointment.startDate).format(moment.HTML5_FMT.DATETIME_LOCAL));
+                this.appointmentDetailForm.controls.endDate.setValue(moment(appointment.endDate).format(moment.HTML5_FMT.DATETIME_LOCAL));
                 this.appointmentDetailForm.controls.patient.setValue(patientMatch);
                 this.appointmentDetailForm.controls.physician.setValue(physicianMatch);
                 this.appointmentDetailForm.controls.description.setValue(appointment.description);
@@ -107,7 +109,7 @@ export class AppointmentDetailDialogComponent implements OnInit {
     }
 
     cancel() {
-        // close dialog
+        this.dialogRef.close();
     }
 
     displayPatient(patient?: Patient): string | undefined {
@@ -155,8 +157,8 @@ export class AppointmentDetailDialogComponent implements OnInit {
         if (this.appointmentDetailForm.valid) {
             this.appointmentEntity = new Appointment();
             this.appointmentEntity.id = this.id;
-            this.appointmentEntity.startDate = moment.utc(this.appointmentDetailForm.controls.startDate.value).format(moment.HTML5_FMT.DATETIME_LOCAL);
-            this.appointmentEntity.endDate = moment.utc(this.appointmentDetailForm.controls.endDate.value).format(moment.HTML5_FMT.DATETIME_LOCAL);
+            this.appointmentEntity.startDate = moment(this.appointmentDetailForm.controls.startDate.value).toISOString();
+            this.appointmentEntity.endDate = moment(this.appointmentDetailForm.controls.endDate.value).toISOString();
             this.appointmentEntity.patientId = this.appointmentDetailForm.controls.patient.value.id;
             this.appointmentEntity.physicianId = this.appointmentDetailForm.controls.physician.value.id;
             this.appointmentEntity.description = this.appointmentDetailForm.controls.description.value;
@@ -167,16 +169,16 @@ export class AppointmentDetailDialogComponent implements OnInit {
                         this.messageService.error('Error - Unable to create appointment.');
                     } else {
                         this.messageService.success('Appointment was successfully created!');
-                        // Close the dialog
+                        this.dialogRef.close();
                     }
                 });
             } else {
-                this.appointmentService.updateAppointment(this.id, this.appointmentEntity).subscribe(appointment => {
+                this.appointmentService.updateAppointment(this.appointmentEntity).subscribe(appointment => {
                     if (!appointment) {
                         this.messageService.error('Error - Unable to save appointment.');
                     } else {
                         this.messageService.success('Appointment was successfully saved!');
-                        // Close the dialog
+                        this.dialogRef.close();
                     }
                 });
             }

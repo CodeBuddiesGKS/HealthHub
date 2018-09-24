@@ -1,9 +1,17 @@
 <div fxLayout="row wrap">
   <div fxLayout="row wrap" fxFlex="90" fxFlexOffset="5">
     <h2 fxFlex="10" fxFlex.lt-sm="100">Scheduler</h2>
-
-    <mat-form-field fxFlex="20" fxFlexOffset="30" fxFlexAlign="end" fxFlex.lt-md="100" fxFlexOffset.lt-md="0">
-      <input matInput [matDatepicker]="appointmentPicker" placeholder="Select a Date">
+    <!-- Appointment Date - Datepicker -->
+    <mat-form-field
+      fxFlex="20" fxFlexOffset="30" fxFlexAlign="end"
+      fxFlex.lt-md="100" fxFlexOffset.lt-md="0">
+      <input matInput
+        [matDatepicker]="appointmentPicker"
+        name="appointmentDate"
+        placeholder="Select a Date"
+        [formControl]="appointmentDateControl"
+        required>
+      <mat-error>You must select an appointment date</mat-error>
       <mat-datepicker-toggle matSuffix [for]="appointmentPicker"></mat-datepicker-toggle>
       <mat-datepicker #appointmentPicker></mat-datepicker>
     </mat-form-field>
@@ -33,24 +41,12 @@
     class="mat-elevation-z8 final-page-section"
     style="height: 700px;">
     <div fxLayout="column" fxFlex="250px">
-      <!-- <div fxLayout="column" fxFlex="50">
-        <mat-toolbar fxFlex="60px">
-          <span>Physicians</span>
-        </mat-toolbar>
-        <div fxFlex="calc(100-60px)" style="overflow-y: auto;">
-          <mat-selection-list #physicianList (selectionChange)="selectSchedules($event)">
-            <mat-list-option checkboxPosition="before" [value]="office" *ngFor="let office of officesWithNestedPhysicians">
-              {{office.title}}
-            </mat-list-option>
-          </mat-selection-list>
-        </div>
-      </div> -->
       <div fxLayout="column" fxFlex="50">
         <mat-toolbar fxFlex="60px">
           <span>Physicians</span>
         </mat-toolbar>
         <div fxFlex="calc(100-60px)" style="overflow-y: auto;">
-          <mat-selection-list #physicianList (selectionChange)="filterPhysicians($event)">
+          <mat-selection-list [formControl]="physicianSelectControl" (selectionChange)="filterPhysicians($event)">
             <mat-list-option checkboxPosition="before" [value]="physician" *ngFor="let physician of physicians">
               {{physician.firstName + ' ' + physician.lastName}}
             </mat-list-option>
@@ -63,7 +59,7 @@
           <span>Patients</span>
         </mat-toolbar>
         <div fxFlex="calc(100-60px)" style="overflow-y: auto;">
-          <mat-selection-list #patientList (selectionChange)="filterPatients($event)">
+          <mat-selection-list [formControl]="patientSelectControl" (selectionChange)="filterPatients($event)">
             <mat-list-option checkboxPosition="before" [value]="patient" *ngFor="let patient of patients">
               <img matListAvatar src="favicon.ico" alt="Avatar Icon">
               <h3 matLine>{{patient.firstName + ' ' + patient.lastName}}</h3>
@@ -83,22 +79,49 @@
           <span style="float: right; border-right: #00e676 solid 2px; color: black;">{{hour}}</span>
         </div>
 
-        <div *ngFor="let schedule of selectedSchedules; let i = index"
+        <div *ngFor="let schedule of (selectedSchedules | filter: 'active'); let i = index"
              [style.grid-column-start]="i + 2"
              [style.grid-column-end]="i + 3"
-             style="grid-row: 1 / -1; background-color: #75a7ff;">
+             style="grid-row: 1 / -1; display: grid; grid-template-columns: subgrid; grid-template-rows: repeat(25, 60px); background-color: #75a7ff;">
           <mat-toolbar color="primary"
               style="grid-row: 1 / 2; height: 60px; position: sticky; top: 0; z-index: 2;">
-            <span style="margin: 0 auto;">{{schedule.firstName + ' ' + schedule.lastName}}</span>
+            <span style="margin: 0 auto;">{{schedule.person.firstName + ' ' + schedule.person.lastName}}</span>
           </mat-toolbar>
 
-          <mat-card fxLayout="row wrap" class="appointment">
-            <mat-card-header fxFlex="100" class="appointment-header">
-              <span>12:00am - 1:00am</span>
+          <mat-card
+            fxLayout="row wrap"
+            *ngFor="let appointment of schedule.appointments"
+            class="appointment"
+            [style.grid-row-start]="mapAppointmentStartTime(appointment)"
+            [style.grid-row-end]="mapAppointmentEndTime(appointment)">
+            <mat-card-header fxLayout="row" fxFlex="100" class="appointment-header">
+              <span>{{appointment.startTime}} - {{appointment.endTime}}</span>
+              <span class="fill-remaining-space"></span>
+              <span style="height: 22px;">
+                <button
+                  mat-icon-button
+                  (click)="editAppointment(appointment)"
+                  class="button-row-item"
+                  style="height: 22px; width: 22px;">
+                  <mat-icon
+                    aria-label="Edit appointment button"
+                    class="icon-shift"
+                    style="vertical-align: top; font-size: 16px; height: 100%; width: 100%;">edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  (click)="deleteAppointment(appointment)"
+                  class="button-row-item"
+                  style="height: 22px; width: 22px;">
+                  <mat-icon
+                    aria-label="Delete appointment button"
+                    style="vertical-align: top; font-size: 16px; height: 100%; width: 100%;">delete</mat-icon>
+                </button>
+              </span>
             </mat-card-header>
             <mat-card-content fxFlex="100" fxFlexAlign="stretch" class="appointment-body">
-              <strong>Charlie Culver</strong>
-              <div>Annual Physical</div>
+              <strong>Physician: {{appointment.physicianId}} | Patient: {{appointment.patientId}}</strong>
+              <div>{{appointment.description}}</div>
             </mat-card-content>
           </mat-card>
         </div>

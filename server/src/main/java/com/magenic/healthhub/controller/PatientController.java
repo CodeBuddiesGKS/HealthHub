@@ -1,8 +1,11 @@
 package com.magenic.healthhub.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +30,8 @@ public class PatientController {
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public List<Patient> getAllPatients() {
-		return patientRepository.findAll();
+		Sort sort = new Sort(Direction.ASC, Arrays.asList("firstName", "lastName"));
+		return patientRepository.findAll(sort);
 	}
 	
 	@GetMapping("/{id}")
@@ -42,10 +46,9 @@ public class PatientController {
 		return patientRepository.save(patient);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping
 	@ResponseStatus(HttpStatus.OK)
-	public Patient updatePatient(@PathVariable("id") long id, @RequestBody Patient requestPatient) {
-//		Patient patientToUpdate = patientRepository.getOne(id);
+	public Patient updatePatient(@RequestBody Patient requestPatient) {
 		return patientRepository.save(requestPatient);
 	}
 

@@ -7,7 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AppointmentService } from './shared/appointment.service';
 
 import { AppointmentDetailDialogComponent } from './appointment-detail-dialog/appointment-detail-dialog.component';
-import { SchedulerComponent } from './scheduler.component';
+import { SchedulerComponent, FilterPipe } from './scheduler.component';
 
 @NgModule({
     imports: [
@@ -18,7 +18,8 @@ import { SchedulerComponent } from './scheduler.component';
     ],
     declarations: [
         AppointmentDetailDialogComponent,
-        SchedulerComponent
+        SchedulerComponent,
+        FilterPipe
     ],
     exports: [
         SchedulerComponent

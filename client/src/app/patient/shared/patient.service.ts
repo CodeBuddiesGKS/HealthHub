@@ -21,7 +21,8 @@ export class PatientService {
     }
 
     getPatient(id: number): Observable<Patient> {
-        return this.http.get<Patient>(this.endpoint + '/' + id).pipe(catchError(() => of(null)));
+        let path = this.endpoint + '/' + id;
+        return this.http.get<Patient>(path).pipe(catchError(() => of(null)));
     }
 
     createPatient(patient: Patient): Observable<Patient> {
@@ -29,12 +30,13 @@ export class PatientService {
         return this.http.post<Patient>(this.endpoint, body, httpOptions).pipe(catchError(() => of(null)));
     }
 
-    updatePatient(id: number, patient: Patient): Observable<Patient> {
+    updatePatient(patient: Patient): Observable<Patient> {
         let body = JSON.stringify(patient);
-        return this.http.put<Patient>(this.endpoint + '/' + id, body, httpOptions).pipe(catchError(() => of(null)));
+        return this.http.put<Patient>(this.endpoint, body, httpOptions).pipe(catchError(() => of(null)));
     }
 
     deletePatient(id): Observable<Patient> {
-        return this.http.delete<Patient>(this.endpoint + '/' + id).pipe(catchError(() => of(null)));
+        let path = this.endpoint + '/' + id;
+        return this.http.delete<Patient>(path).pipe(catchError(() => of(null)));
     }
 }

@@ -35,8 +35,8 @@ export class PhysicianService {
         return this.http.post<Physician>(this.endpoint, body, httpOptions).pipe(catchError(() => of(null)));
     }
 
-    updatePhysician(id: number, physician: Physician): Observable<Physician> {
-        let path = this.endpoint + '/' + id;
+    updatePhysician(physician: Physician): Observable<Physician> {
+        let path = this.endpoint;
         let body = JSON.stringify(physician);
         return this.http.put<Physician>(path, body, httpOptions).pipe(catchError(() => of(null)));
     }

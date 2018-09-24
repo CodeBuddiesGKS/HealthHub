@@ -11,6 +11,6 @@ import com.magenic.healthhub.model.Physician;
 @Repository
 public interface PhysicianRepository extends JpaRepository<Physician, Long> {
 
-	List<Physician> findByOfficeId(@Param("officeId") Long officeId);
+	List<Physician> findByOfficeIdOrderByFirstNameAscLastNameAsc(@Param("officeId") Long officeId);
 	
 }

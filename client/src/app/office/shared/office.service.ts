@@ -21,7 +21,8 @@ export class OfficeService {
     }
 
     getOffice(id: number): Observable<Office> {
-        return this.http.get<Office>(this.endpoint + '/' + id).pipe(catchError(() => of(null)));
+        let path = this.endpoint + '/' + id;
+        return this.http.get<Office>(path).pipe(catchError(() => of(null)));
     }
 
     createOffice(office: Office): Observable<Office> {
@@ -29,12 +30,13 @@ export class OfficeService {
         return this.http.post<Office>(this.endpoint, body, httpOptions).pipe(catchError(() => of(null)));
     }
 
-    updateOffice(id: number, office: Office): Observable<Office> {
+    updateOffice(office: Office): Observable<Office> {
         let body = JSON.stringify(office);
-        return this.http.put<Office>(this.endpoint + '/' + id, body, httpOptions).pipe(catchError(() => of(null)));
+        return this.http.put<Office>(this.endpoint, body, httpOptions).pipe(catchError(() => of(null)));
     }
 
     deleteOffice(id): Observable<Office> {
-        return this.http.delete<Office>(this.endpoint + '/' + id).pipe(catchError(() => of(null)));
+        let path = this.endpoint + '/' + id;
+        return this.http.delete<Office>(path).pipe(catchError(() => of(null)));
     }
 }

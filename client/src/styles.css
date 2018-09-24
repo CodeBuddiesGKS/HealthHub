@@ -19,6 +19,12 @@ html, body {
   margin-right: 8px;
 }
 
+.fill-remaining-space {
+  /* This fills the remaining space, by using flexbox. 
+     Parent must use a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
 .final-page-section {
   margin-bottom: 15px;
 }

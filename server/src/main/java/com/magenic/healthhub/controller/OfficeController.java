@@ -42,9 +42,9 @@ public class OfficeController {
 		return officeRepository.save(office);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping
 	@ResponseStatus(HttpStatus.OK)
-	public Office updateOffice(@PathVariable("id") long id, @RequestBody Office requestOffice) {
+	public Office updateOffice(@RequestBody Office requestOffice) {
 		return officeRepository.save(requestOffice);
 	}
 

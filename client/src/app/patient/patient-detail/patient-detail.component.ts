@@ -79,7 +79,7 @@ export class PatientDetailComponent implements OnInit {
             this.patientEntity.id = this.id;
             this.patientEntity.firstName = this.patientDetailForm.controls.firstName.value;
             this.patientEntity.lastName = this.patientDetailForm.controls.lastName.value;
-            this.patientEntity.birthDate = moment.utc(this.patientDetailForm.controls.birthDate.value).format(moment.HTML5_FMT.DATETIME_LOCAL);
+            this.patientEntity.birthDate = moment(this.patientDetailForm.controls.birthDate.value).toISOString();
             this.patientEntity.email = this.patientDetailForm.controls.email.value;
             this.patientEntity.phone = this.patientDetailForm.controls.phone.value;
             this.patientEntity.address1 = this.patientDetailForm.controls.address1.value;
@@ -99,7 +99,7 @@ export class PatientDetailComponent implements OnInit {
                     }
                 });
             } else {
-                this.patientService.updatePatient(this.id, this.patientEntity).subscribe(patient => {
+                this.patientService.updatePatient(this.patientEntity).subscribe(patient => {
                     if (!patient) {
                         this.messageService.error('Error - Unable to save patient.');
                     } else {

@@ -134,7 +134,7 @@ export class PhysicianDetailComponent implements OnInit {
             this.physicianEntity.officeId = this.physicianDetailForm.controls.office.value.id;
             this.physicianEntity.firstName = this.physicianDetailForm.controls.firstName.value;
             this.physicianEntity.lastName = this.physicianDetailForm.controls.lastName.value;
-            this.physicianEntity.employmentDate = moment.utc(this.physicianDetailForm.controls.employmentDate.value).format(moment.HTML5_FMT.DATETIME_LOCAL);
+            this.physicianEntity.employmentDate = moment(this.physicianDetailForm.controls.employmentDate.value).toISOString();
             this.physicianEntity.email = this.physicianDetailForm.controls.email.value;
             this.physicianEntity.phone = this.physicianDetailForm.controls.phone.value;
             this.physicianEntity.gender = this.physicianDetailForm.controls.gender.value;
@@ -149,7 +149,7 @@ export class PhysicianDetailComponent implements OnInit {
                     }
                 });
             } else {
-                this.physicianService.updatePhysician(this.id, this.physicianEntity).subscribe(physician => {
+                this.physicianService.updatePhysician(this.physicianEntity).subscribe(physician => {
                     if (!physician) {
                         this.messageService.error('Error - Unable to save physician.');
                     } else {

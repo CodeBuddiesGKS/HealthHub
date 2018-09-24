@@ -1,8 +1,11 @@
 package com.magenic.healthhub.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +30,8 @@ public class PhysicianController {
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public List<Physician> getAllPhysicians() {
-		return physicianRepository.findAll();
+		Sort sort = new Sort(Direction.ASC, Arrays.asList("firstName", "lastName"));
+		return physicianRepository.findAll(sort);
 	}
 	
 	@GetMapping("/{id}")
@@ -39,7 +43,7 @@ public class PhysicianController {
 	@GetMapping("/officeId/{officeId}")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Physician> getPhysiciansByOfficeId(@PathVariable("officeId") Long officeId) {
-		return physicianRepository.findByOfficeId(officeId);
+		return physicianRepository.findByOfficeIdOrderByFirstNameAscLastNameAsc(officeId);
 	}
 	
 	@PostMapping
@@ -48,9 +52,9 @@ public class PhysicianController {
 		return physicianRepository.save(physician);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping
 	@ResponseStatus(HttpStatus.OK)
-	public Physician updatePhysician(@PathVariable("id") long id, @RequestBody Physician requestPhysician) {
+	public Physician updatePhysician(@RequestBody Physician requestPhysician) {
 		return physicianRepository.save(requestPhysician);
 	}
 

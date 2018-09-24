@@ -34,9 +34,9 @@ public class OfficeHourController {
 		return officeHourRepository.save(officeHour);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping
 	@ResponseStatus(HttpStatus.OK)
-	public OfficeHour updateOfficeHour(@PathVariable("id") long id, @RequestBody OfficeHour requestOfficeHour) {
+	public OfficeHour updateOfficeHour(@RequestBody OfficeHour requestOfficeHour) {
 		return officeHourRepository.save(requestOfficeHour);
 	}
 

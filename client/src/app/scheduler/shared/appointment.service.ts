@@ -34,14 +34,24 @@ export class AppointmentService {
         let path = this.endpoint + '/physicianId/' + physicianId;
         return this.http.get<Appointment[]>(path).pipe(catchError(() => of(null)));
     }
+    
+    getAppointmentsByPatientIdBetweenDates(patientId, startDate, endDate) {
+        let path = this.endpoint + '/patientIdBetweenDates/' + patientId + '/' + startDate + '/' + endDate;
+        return this.http.get<Appointment[]>(path).pipe(catchError(() => of(null)));
+    }
+    
+    getAppointmentsByPhysicianIdBetweenDates(physicianId, startDate, endDate) {
+        let path = this.endpoint + '/physicianIdBetweenDates/' + physicianId + '/' + startDate + '/' + endDate;
+        return this.http.get<Appointment[]>(path).pipe(catchError(() => of(null)));
+    }
 
     createAppointment(appointment: Appointment): Observable<Appointment> {
         let body = JSON.stringify(appointment);
         return this.http.post<Appointment>(this.endpoint, body, httpOptions).pipe(catchError(() => of(null)));
     }
 
-    updateAppointment(id: number, appointment: Appointment): Observable<Appointment> {
-        let path = this.endpoint + '/' + id;
+    updateAppointment(appointment: Appointment): Observable<Appointment> {
+        let path = this.endpoint;
         let body = JSON.stringify(appointment);
         return this.http.put<Appointment>(path, body, httpOptions).pipe(catchError(() => of(null)));
     }
