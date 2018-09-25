@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {
     FormControl,
     ValidatorFn,
@@ -6,7 +6,7 @@ import {
     FormGroup,
     Validators
 } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
 import { AppointmentService } from '../shared/appointment.service';
@@ -51,6 +51,7 @@ export class AppointmentDetailDialogComponent implements OnInit {
     public physicians: Physician[];
 
     constructor(private appointmentService: AppointmentService,
+                @Inject(MAT_DIALOG_DATA) private data: any,
                 private dialogRef: MatDialogRef<AppointmentDetailDialogComponent>,
                 private messageService: MessageService,
                 private patientService: PatientService,
@@ -58,13 +59,13 @@ export class AppointmentDetailDialogComponent implements OnInit {
                 private route: ActivatedRoute) { }
 
     ngOnInit() {
-        this.id = +this.route.snapshot.paramMap.get('id');
+        this.id = this.data && +this.data.id;
         this.editMode = !!this.id;
         this.pageTitle = this.editMode ? 'Edit Appointment' : 'Add Appointment';
         
         this.appointmentDetailForm = new FormGroup({
             startDate: new FormControl(moment().add(1, 'hour').startOf('hour').format(moment.HTML5_FMT.DATETIME_LOCAL)),
-            endDate: new FormControl(moment().add(1, 'hour').endOf('hour').format(moment.HTML5_FMT.DATETIME_LOCAL)),
+            endDate: new FormControl(moment().add(2, 'hour').startOf('hour').format(moment.HTML5_FMT.DATETIME_LOCAL)),
             physician: new FormControl(null),
             patient: new FormControl(null),
             description: new FormControl("")
@@ -169,7 +170,7 @@ export class AppointmentDetailDialogComponent implements OnInit {
                         this.messageService.error('Error - Unable to create appointment.');
                     } else {
                         this.messageService.success('Appointment was successfully created!');
-                        this.dialogRef.close();
+                        this.dialogRef.close(true);
                     }
                 });
             } else {
@@ -178,7 +179,7 @@ export class AppointmentDetailDialogComponent implements OnInit {
                         this.messageService.error('Error - Unable to save appointment.');
                     } else {
                         this.messageService.success('Appointment was successfully saved!');
-                        this.dialogRef.close();
+                        this.dialogRef.close(true);
                     }
                 });
             }

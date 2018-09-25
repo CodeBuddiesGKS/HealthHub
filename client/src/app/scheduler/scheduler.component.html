@@ -15,7 +15,7 @@
       <mat-datepicker-toggle matSuffix [for]="appointmentPicker"></mat-datepicker-toggle>
       <mat-datepicker #appointmentPicker></mat-datepicker>
     </mat-form-field>
-
+    <!-- View Button Group -->
     <div fxLayout="row" fxLayoutAlign="end" fxFlex="40" fxFlexAlign="center" fxFlex.lt-md="100" fxFlexOffset.lt-md="0" class="button-row">
       <mat-button-toggle-group #displayLayout="matButtonToggleGroup" value="day" class="button-row-item">
         <mat-button-toggle value="day">
@@ -27,20 +27,20 @@
           <span>Week</span>
         </mat-button-toggle>
       </mat-button-toggle-group>
-
       <button mat-raised-button color="accent" (click)="addAppointment()" class="button-row-item">
         <mat-icon class="icon-shift">alarm_add</mat-icon>
         <span>Add Appointment</span>
       </button>
     </div>
   </div>
-
+  <!-- Left Sidebar -->
   <div fxLayout="row"
     fxFlex="90"
     fxFlexOffset="5"
     class="mat-elevation-z8 final-page-section"
     style="height: 700px;">
     <div fxLayout="column" fxFlex="250px">
+      <!-- Physician List -->
       <div fxLayout="column" fxFlex="50">
         <mat-toolbar fxFlex="60px">
           <span>Physicians</span>
@@ -53,7 +53,7 @@
           </mat-selection-list>
         </div>
       </div>
-
+      <!-- Patient List -->
       <div fxLayout="column" fxFlex="50">
         <mat-toolbar fxFlex="60px">
           <span>Patients</span>
@@ -68,110 +68,69 @@
         </div>
       </div>
     </div>
-
+    <!-- Day View -->
     <div *ngIf="displayLayout.value === 'day'"
-          fxFlex="calc(100-250px)"
-          style="height: 700px; overflow-y: auto;">
-      <div style="display: grid; grid-template: repeat(25, 60px) / 60px auto; grid-column-gap: 10px">
-        <mat-toolbar color="primary" style="grid-row: 1 / 2; grid-column: 1 / 2; position: sticky; top: 0; z-index: 2; height: 60px;"></mat-toolbar>
+      fxFlex="calc(100-250px)"
+      style="height: 700px; overflow-y: auto;">
+      <div class="day-grid">
+        <mat-toolbar class="day-grid-corner" color="primary"></mat-toolbar>
 
-        <div *ngFor="let hour of hours" style="grid-column: 1 / 2; border-top: #00e676 solid 2px; background-color: #75a7ff;">
-          <span style="float: right; border-right: #00e676 solid 2px; color: black;">{{hour}}</span>
+        <div class="day-grid-timeslot" *ngFor="let hour of hours">
+          <span class="day-grid-timeslot-label">{{hour}}</span>
         </div>
 
         <div *ngFor="let schedule of (selectedSchedules | filter: 'active'); let i = index"
              [style.grid-column-start]="i + 2"
              [style.grid-column-end]="i + 3"
-             style="grid-row: 1 / -1; display: grid; grid-template-columns: subgrid; grid-template-rows: repeat(25, 60px); background-color: #75a7ff;">
-          <mat-toolbar color="primary"
-              style="grid-row: 1 / 2; height: 60px; position: sticky; top: 0; z-index: 2;">
-            <span style="margin: 0 auto;">{{schedule.person.firstName + ' ' + schedule.person.lastName}}</span>
+             class="schedule-grid">
+          <mat-toolbar class="schedule-grid-header" color="primary">
+            <span class="schedule-grid-header-text">{{schedule.person.firstName + ' ' + schedule.person.lastName}}</span>
           </mat-toolbar>
 
           <mat-card
-            fxLayout="row wrap"
-            *ngFor="let appointment of schedule.appointments"
             class="appointment"
-            [style.grid-row-start]="mapAppointmentStartTime(appointment)"
-            [style.grid-row-end]="mapAppointmentEndTime(appointment)">
-            <mat-card-header fxLayout="row" fxFlex="100" class="appointment-header">
-              <span>{{appointment.startTime}} - {{appointment.endTime}}</span>
+            *ngFor="let appointment of schedule.appointments"
+            fxLayout="row wrap"
+            [style.grid-row-start]="mapAppointmentDate(appointment.startDate)"
+            [style.grid-row-end]="mapAppointmentDate(appointment.endDate)">
+            <mat-card-content
+              class="appointment-body"
+              fxLayout="row"
+              fxFlex="100"
+              fxFlexAlign="stretch">
+              <span class="appointment-body-spacer" fxFlex="10px"></span>
+              <strong class="appointment-body-description">{{appointment.description + ';'}}</strong>
+              <span *ngIf="schedule.isPatient">{{appointment.physician.firstName + ' ' + appointment.physician.lastName}}</span>
+              <span *ngIf="!schedule.isPatient">{{appointment.patient.firstName + ' ' + appointment.patient.lastName}}</span>
               <span class="fill-remaining-space"></span>
-              <span style="height: 22px;">
+              <span class="appointment-options">
                 <button
-                  mat-icon-button
+                  class="appointment-options-button"
                   (click)="editAppointment(appointment)"
-                  class="button-row-item"
-                  style="height: 22px; width: 22px;">
+                  mat-icon-button>
                   <mat-icon
-                    aria-label="Edit appointment button"
-                    class="icon-shift"
-                    style="vertical-align: top; font-size: 16px; height: 100%; width: 100%;">edit</mat-icon>
+                    class="appointment-options-edit-icon"
+                    aria-label="Edit appointment button">edit</mat-icon>
                 </button>
                 <button
-                  mat-icon-button
+                  class="appointment-options-button"
                   (click)="deleteAppointment(appointment)"
-                  class="button-row-item"
-                  style="height: 22px; width: 22px;">
+                  mat-icon-button>
                   <mat-icon
-                    aria-label="Delete appointment button"
-                    style="vertical-align: top; font-size: 16px; height: 100%; width: 100%;">delete</mat-icon>
+                    class="appointment-options-delete-icon"
+                    aria-label="Delete appointment button">delete</mat-icon>
                 </button>
               </span>
-            </mat-card-header>
-            <mat-card-content fxFlex="100" fxFlexAlign="stretch" class="appointment-body">
-              <strong>Physician: {{appointment.physicianId}} | Patient: {{appointment.patientId}}</strong>
-              <div>{{appointment.description}}</div>
             </mat-card-content>
           </mat-card>
         </div>
       </div>
     </div>
-
+    <!-- Week View -->
     <div *ngIf="displayLayout.value === 'week'"
-          fxLayout="row"
-          fxLayoutGap="15px"
-          fxFlex="calc(100-250px)"
-          style="overflow-y: auto;">
+      fxFlex="calc(100-250px)"
+      style="height: 700px; overflow-y: auto;">
       Week View
     </div>
   </div>
 </div>
-
-
-
-
-
-
-<!-- <div *ngIf="displayLayout.value === 'day'"
-fxLayout="row"
-fxLayoutGap="15px"
-fxFlex="calc(100-250px)"
-style="height: 700px; overflow-y: auto;">
-<div fxLayout="column" fxLayoutAlign="baseline center" class="time-column">
-<div class="time-unit-header"></div>
-<div class="time-unit" *ngFor="let hour of hours">
-<span>{{hour}}</span>
-</div>
-</div>
-
-<div fxLayout="column" fxFlex="300px" class="resource-calendar">
-<div class="resource-calendar-header">
-<mat-toolbar color="primary" style="height: 60px;">
-  <span style="margin: 0 auto;">Resource Name</span>
-</mat-toolbar>
-</div>
-<div class="resource-calendar-timeslot"></div>
-<mat-card fxLayout="row wrap" class="appointment">
-<mat-card-header fxFlex="100" class="appointment-header">
-  <span>12:00am - 1:00am</span>
-  <div fxFlex="1 1 auto"></div>
-  <span>Status</span>
-</mat-card-header>
-<mat-card-content fxFlex="100" fxFlexAlign="stretch" class="appointment-body">
-  <strong>Charlie Culver</strong>
-  <div>Annual Physical</div>
-</mat-card-content>
-</mat-card>
-</div>
-</div> -->

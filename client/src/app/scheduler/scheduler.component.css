@@ -2,48 +2,79 @@
 .appointment {
   padding: 0;
 }
-.appointment-header {
-  background-color: #00e676;
-  padding-left: 5px;
-}
 .appointment-body {
   background-color: #66ffa6;
-  padding-left: 5px;
+  padding-left: 0px;
+}
+.appointment-body-spacer {
+  background-color: #00e676;
+  margin-right: 5px;
+}
+.appointment-body-description {
+  margin-right: 5px;
+}
+.appointment-options {
+  height: 15px;
+}
+.appointment-options-button {
+  height: 15px;
+  width: 15px;
+}
+.appointment-options-edit-icon {
+  vertical-align: top;
+  line-height: 15px;
+  font-size: 15px;
+  height: 100%;
+  width: 100%;
+  margin-right: 5px;
+}
+.appointment-options-delete-icon {
+  vertical-align: top;
+  line-height: 15px;
+  font-size: 15px;
+  height: 100%;
+  width: 100%;
 }
 
-.resource-calendar-container {
-  overflow-x: auto;
+.day-grid {
+  display: grid;
+  grid-template: repeat(25, 60px) / 60px;
+  grid-column-gap: 5px;
+  grid-auto-columns: 1fr;
 }
-.resource-calendar {
-  border-bottom: #00e676 solid 1px;
-}
-.resource-calendar-header {
+.day-grid-corner {
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  position: sticky;
+  top: 0;
+  z-index: 2;
   height: 60px;
 }
-.resource-calendar-timeslot {
-  position: absolute;
-  top: 180px;
-  height: 60px;
-  border-top: #00e676 solid 1px;
+.day-grid-timeslot {
+  grid-column: 1 / 2;
+  border-top: #00e676 solid 2px;
+  background-color: #75a7ff;
+}
+.day-grid-timeslot-label {
+  float: right;
+  border-right: #00e676 solid 2px;
+  color: black;
 }
 
-.scroll-list-header {
-  margin: 0;
+.schedule-grid {
+  grid-row: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: repeat(300, 5px);
+  background-color: #75a7ff;
 }
-.scroll-list-md {
-  height: 250px;
-  overflow-y: auto;
-}
-
-.time-column {
-  border-right: #00e676 solid 1px;
-  border-bottom: #00e676 solid 1px;
-  width: 60px;
-}
-.time-unit-header {
+.schedule-grid-header {
+  grid-row: 1 / 13;
   height: 60px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
-.time-unit {
-  height: 60px;
-  border-top: #00e676 solid 1px;
+.schedule-grid-header-text {
+  margin: 0 auto;
 }

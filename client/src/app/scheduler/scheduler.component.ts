@@ -15,20 +15,21 @@ import { Office } from '../office/shared/office';
 import { Patient } from '../patient/shared/patient';
 import { Physician } from '../physician/shared/physician';
 
-import { Observable, forkJoin, of } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 import * as moment from 'moment';
 
 const HOURS: string[] = ['12am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm'];
 
 export class Schedule {
-    constructor(person) {
+    constructor(person: Physician | Patient, isPatient: boolean) {
         this.active = true;
         this.appointments = [];
+        this.isPatient = isPatient;
         this.person = person;
     }
     public active: boolean;
     public appointments: Appointment[];
+    public isPatient: boolean;
     public person: Physician | Patient;
 }
 
@@ -86,17 +87,16 @@ export class SchedulerComponent implements OnInit {
             // });
         });
 
-        this.appointmentDateControl.valueChanges.subscribe(() => {
-            this.patientSelectControl.setValue(null);
-            this.physicianSelectControl.setValue(null);
-            this.selectedSchedules = [];
-        });
+        this.appointmentDateControl.valueChanges.subscribe(() => this.refreshSchedules());
     }
 
     addAppointment() {
         const dialogRef = this.dialog.open(AppointmentDetailDialogComponent, {
             width: '600px',
-        })
+        });
+        dialogRef.afterClosed().subscribe(shouldRefresh => {
+            if (shouldRefresh) this.refreshSchedules();
+        });
     }
     
     changeSelectedSchedules(option, isPatient: boolean) {
@@ -105,7 +105,7 @@ export class SchedulerComponent implements OnInit {
         let schedule = this.selectedSchedules.find(schedule => schedule.person.id === option.value.id);
 
         if (option.selected && !schedule) {
-            schedule = new Schedule(option.value);
+            schedule = new Schedule(option.value, isPatient);
             let getAppointments = isPatient
                 ? this.appointmentService.getAppointmentsByPatientIdBetweenDates(option.value.id, startDate, endDate)
                 : this.appointmentService.getAppointmentsByPhysicianIdBetweenDates(option.value.id, startDate, endDate);
@@ -132,6 +132,7 @@ export class SchedulerComponent implements OnInit {
                 this.messageService.error('Error - Unable to delete appointment');
             } else {
                 this.messageService.success('Appointment was successfully deleted!');
+                this.refreshSchedules();
             }
         });
     }
@@ -139,7 +140,11 @@ export class SchedulerComponent implements OnInit {
     editAppointment(appointment) {
         const dialogRef = this.dialog.open(AppointmentDetailDialogComponent, {
             width: '600px',
-        })
+            data: { id: appointment.id }
+        });
+        dialogRef.afterClosed().subscribe(shouldRefresh => {
+            if (shouldRefresh) this.refreshSchedules();
+        });
     }
 
     filterPatients({option, source}) {
@@ -150,11 +155,19 @@ export class SchedulerComponent implements OnInit {
         this.changeSelectedSchedules(option, false);
     }
 
-    mapAppointmentStartTime(appointment) {
-        return moment(appointment.startDate).hour() + 2;
+    mapAppointmentDate(date) {
+        let theMoment = moment(date);
+        let hours = theMoment.hours();
+        let mins = theMoment.minutes();
+        let slotOffset = Math.floor(mins / 5);
+        let toolbarOffset = 13;
+        
+        return (hours * 12) + toolbarOffset + slotOffset;
     }
 
-    mapAppointmentEndTime(appointment) {
-        return moment(appointment.endDate).hour() + 2;
+    refreshSchedules() {
+        this.selectedSchedules = [];
+        this.patientSelectControl.value.forEach(patient => this.changeSelectedSchedules({ selected: true, value: patient }, true));
+        this.physicianSelectControl.value.forEach(physician => this.changeSelectedSchedules({ selected: true, value: physician }, false));
     }
 }
