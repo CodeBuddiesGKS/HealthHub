@@ -2,13 +2,18 @@
   <div fxFlex="90" fxFlexOffset="5" fxLayout="row">
     <h2>Physicians Directory</h2>
     <div fxFlex="1 1 auto"></div>
-    <button fxFlexAlign="center" mat-raised-button color="accent" (click)="navigate('/physicianDetail')">
+    <button fxFlexAlign="center"
+      (click)="navigate('/physicianDetail')"
+      color="accent"
+      mat-raised-button>
       <mat-icon class="icon-shift">person_add</mat-icon>
       <span>Add Physician</span>
     </button>
   </div>
 
-  <div fxFlex="90" fxFlexOffset="5" fxFlex.lt-md="100" fxFlexOffset.lt-md="0" class="mat-elevation-z8 final-page-section">
+  <div fxFlex="90" fxFlexOffset="5"
+    fxFlex.lt-md="100" fxFlexOffset.lt-md="0"
+    class="mat-elevation-z8 final-page-section">
     <table mat-table [dataSource]="dataSource" matSort matSortActive="firstName lastName" matSortDirection="asc" matSortDisableClear>
       <!-- Name Column -->
       <ng-container matColumnDef="firstName lastName">

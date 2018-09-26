@@ -33,12 +33,13 @@
       </button>
     </div>
   </div>
-  <!-- Left Sidebar -->
+  
   <div fxLayout="row"
-    fxFlex="90"
-    fxFlexOffset="5"
+    fxFlex="90" fxFlexOffset="5"
+    fxFlex.lt-md="100" fxFlexOffset.lt-md="0"
     class="mat-elevation-z8 final-page-section"
     style="height: 700px;">
+    <!-- Left Sidebar -->
     <div fxLayout="column" fxFlex="250px">
       <!-- Physician List -->
       <div fxLayout="column" fxFlex="50">
@@ -48,7 +49,7 @@
         <div fxFlex="calc(100-60px)" style="overflow-y: auto;">
           <mat-selection-list [formControl]="physicianSelectControl" (selectionChange)="filterPhysicians($event)">
             <mat-list-option checkboxPosition="before" [value]="physician" *ngFor="let physician of physicians">
-              {{physician.firstName + ' ' + physician.lastName}}
+              <span>{{physician.firstName + ' ' + physician.lastName}}</span>
             </mat-list-option>
           </mat-selection-list>
         </div>
@@ -61,8 +62,7 @@
         <div fxFlex="calc(100-60px)" style="overflow-y: auto;">
           <mat-selection-list [formControl]="patientSelectControl" (selectionChange)="filterPatients($event)">
             <mat-list-option checkboxPosition="before" [value]="patient" *ngFor="let patient of patients">
-              <img matListAvatar src="favicon.ico" alt="Avatar Icon">
-              <h3 matLine>{{patient.firstName + ' ' + patient.lastName}}</h3>
+              <span>{{patient.firstName + ' ' + patient.lastName}}</span>
             </mat-list-option>
           </mat-selection-list>
         </div>

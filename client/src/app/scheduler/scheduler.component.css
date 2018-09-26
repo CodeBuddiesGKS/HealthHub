@@ -40,6 +40,7 @@
   display: grid;
   grid-template: repeat(25, 60px) / 60px;
   grid-column-gap: 5px;
+  /* autoprefixer: off */
   grid-auto-columns: 1fr;
 }
 .day-grid-corner {

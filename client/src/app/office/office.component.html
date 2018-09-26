@@ -2,8 +2,10 @@
 <div fxLayout="row wrap">
   <div fxFlex="90" fxFlexOffset="5" fxLayout="row">
     <h2>Office Manager</h2>
-    <div fxFlex="1 1 auto"></div>
-    <button fxFlexAlign="center" mat-raised-button color="accent" (click)="navigate('/officeDetail')">
+    <span class="fill-remaining-space"></span>
+    <button fxFlexAlign="center"
+      mat-raised-button color="accent"
+      (click)="navigate('/officeDetail')">
       <mat-icon class="icon-shift">add_location</mat-icon>
       <span>Add Office</span>
     </button>
