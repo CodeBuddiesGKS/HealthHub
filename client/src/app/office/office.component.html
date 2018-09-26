@@ -13,11 +13,10 @@
 
   <div fxFlex="90" fxFlexOffset="5"
     fxFlex.lt-md="100" fxFlexOffset.lt-md="0"
-    class="final-page-section"
+    class="office-grid final-page-section"
     *ngIf="offices">
     <span *ngFor="let office of offices"
-      class="office-card"
-      style="margin: 10px; width: 300px; float: left;">
+      class="office-card">
       <mat-card>
         <mat-card-header
           fxLayout="row wrap"

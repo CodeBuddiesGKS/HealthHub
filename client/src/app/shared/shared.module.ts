@@ -27,6 +27,7 @@ import {
 
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
+import { FilterPipe } from './pipes/filter.pipe';
 import { MessageComponent } from './message/message.component';
 import { StatusMessageComponent } from './message/status-message/status-message.component';
 
@@ -58,6 +59,7 @@ import { StatusMessageComponent } from './message/status-message/status-message.
         MatToolbarModule,
     ],
     declarations: [
+        FilterPipe,
         MessageComponent,
         StatusMessageComponent
     ],
@@ -84,7 +86,8 @@ import { StatusMessageComponent } from './message/status-message/status-message.
         MatTableModule,
         MatTabsModule,
         MatToolbarModule,
-
+        
+        FilterPipe,
         MessageComponent
     ],
     entryComponents: [

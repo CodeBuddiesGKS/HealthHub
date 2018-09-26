@@ -75,11 +75,13 @@
       <div class="day-grid">
         <mat-toolbar class="day-grid-corner" color="primary"></mat-toolbar>
 
-        <div class="day-grid-timeslot" *ngFor="let hour of hours">
+        <div class="day-grid-timeslot"
+          *ngFor="let hour of hours; let hourIndex = index;"
+          [id]="'timeslot' + hourIndex">
           <span class="day-grid-timeslot-label">{{hour}}</span>
         </div>
 
-        <div *ngFor="let schedule of (selectedSchedules | filter: 'active'); let i = index"
+        <div *ngFor="let schedule of selectedSchedules; let i = index"
              [style.grid-column-start]="i + 2"
              [style.grid-column-end]="i + 3"
              class="schedule-grid">

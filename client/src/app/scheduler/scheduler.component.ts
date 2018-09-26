@@ -10,37 +10,14 @@ import { PhysicianService } from '../physician/shared/physician.service';
 
 import { AppointmentDetailDialogComponent } from './appointment-detail-dialog/appointment-detail-dialog.component';
 
-import { Appointment } from './shared/appointment';
 import { Office } from '../office/shared/office';
 import { Patient } from '../patient/shared/patient';
 import { Physician } from '../physician/shared/physician';
+import { Schedule } from './shared/schedule';
 
+import { HOURS } from './shared/hours';
 import { forkJoin } from 'rxjs';
 import * as moment from 'moment';
-
-const HOURS: string[] = ['12am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm'];
-
-export class Schedule {
-    constructor(person: Physician | Patient, isPatient: boolean) {
-        this.active = true;
-        this.appointments = [];
-        this.isPatient = isPatient;
-        this.person = person;
-    }
-    public active: boolean;
-    public appointments: Appointment[];
-    public isPatient: boolean;
-    public person: Physician | Patient;
-}
-
-import { Pipe, PipeTransform } from '@angular/core';
-
-@Pipe({ name: 'filter', pure: false })
-export class FilterPipe implements PipeTransform {
-    transform(array: any[], prop: string) {
-        return array.filter(item => item[prop]);
-    }
-}
 
 @Component({
     selector: 'app-scheduler',
@@ -56,7 +33,7 @@ export class SchedulerComponent implements OnInit {
     public patientSelectControl: FormControl = new FormControl();
     public physicians: Physician[];
     public physicianSelectControl: FormControl = new FormControl();
-    public selectedSchedules: any[] = [];
+    public selectedSchedules: Schedule[] = [];
 
     constructor(private appointmentService: AppointmentService,
                 private dialog: MatDialog,
@@ -78,6 +55,7 @@ export class SchedulerComponent implements OnInit {
             // this.offices = offices;
             this.patients = patients;
             this.physicians = physicians;
+            document.getElementById('timeslot6').scrollIntoView();
 
             // this.officesWithNestedPhysicians = this.offices.map(office => {
             //     office['physicians'] = this.physicians.filter(physician => {
@@ -114,15 +92,11 @@ export class SchedulerComponent implements OnInit {
                     this.messageService.error('Error - Unable to get appointments.');
                 } else {
                     schedule.appointments = appointments;
-                    schedule.appointments.forEach(appointment => {
-                        appointment.startTime = moment(appointment.startDate).format('h:mm a');
-                        appointment.endTime = moment(appointment.endDate).format('h:mm a');
-                    });
                     this.selectedSchedules.push(schedule);
                 }
             });
-        } else if (schedule) {
-            schedule.active = !!option.selected;
+        } else if (!option.selected && schedule) {
+            this.selectedSchedules.splice(this.selectedSchedules.indexOf(schedule), 1);
         }
     }
 
@@ -167,7 +141,7 @@ export class SchedulerComponent implements OnInit {
 
     refreshSchedules() {
         this.selectedSchedules = [];
-        this.patientSelectControl.value.forEach(patient => this.changeSelectedSchedules({ selected: true, value: patient }, true));
-        this.physicianSelectControl.value.forEach(physician => this.changeSelectedSchedules({ selected: true, value: physician }, false));
+        this.patientSelectControl.value && this.patientSelectControl.value.forEach(patient => this.changeSelectedSchedules({ selected: true, value: patient }, true));
+        this.physicianSelectControl.value && this.physicianSelectControl.value.forEach(physician => this.changeSelectedSchedules({ selected: true, value: physician }, false));
     }
 }
