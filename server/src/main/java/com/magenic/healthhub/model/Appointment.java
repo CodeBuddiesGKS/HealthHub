@@ -23,13 +23,10 @@ public class Appointment {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
-	
 	@Column(name = "description")
 	private String description;
-	
 	@Column(name = "end_date", columnDefinition= "TIMESTAMP WITH TIME ZONE")
 	private Date endDate;
-
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(
 		name = "patient_id",
@@ -39,10 +36,8 @@ public class Appointment {
 		nullable=false
 	)
 	private Patient patient;
-	
 	@Column(name = "patient_id")
 	private Long patientId;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(
 		name = "physician_id",
@@ -52,10 +47,8 @@ public class Appointment {
 		nullable=false
 	)
 	private Physician physician;
-	
 	@Column(name = "physician_id")
 	private Long physicianId;
-	
 	@Column(name = "start_date", columnDefinition= "TIMESTAMP WITH TIME ZONE")
 	private Date startDate;
 	

@@ -32,9 +32,6 @@ export class OfficeComponent implements OnInit {
             } else {
                 this.offices = offices;
                 this.offices.forEach(office => {
-                    office.props = {
-                        physiciansButtonLabel: 'Show Physicians'
-                    };
                 });
             }
         });
@@ -44,9 +41,7 @@ export class OfficeComponent implements OnInit {
         this.router.navigateByUrl(path);
     }
 
-    viewPhysicians(office) {
-        office.openPhysiciansList = !office.openPhysiciansList;
-        office.props.physiciansButtonLabel = office.openPhysiciansList ? 'Hide Physicians' : 'Show Physicians'
+    openPhysicians(office) {
         if (!office.physicians) {
             this.physicianService.getPhysiciansByOfficeId(office.id).subscribe(physicians => {
                 if (!physicians) {

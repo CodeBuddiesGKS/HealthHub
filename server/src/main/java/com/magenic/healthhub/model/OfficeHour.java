@@ -1,6 +1,6 @@
 package com.magenic.healthhub.model;
 
-import java.time.OffsetTime;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,15 +23,17 @@ public class OfficeHour {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Office.class, optional = false)
-    @JoinColumn(name = "office_id", nullable = false)
+//	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Office.class, optional = false)
+//    @JoinColumn(name = "office_id", nullable = false)
+//	private Office office;
+	@Column(name = "office_id")
 	private Long officeId;
 	@Column(name = "day")
 	private int day;
 	@Column(name = "open_time")
-	private OffsetTime openTime;
+	private LocalTime openTime;
 	@Column(name = "close_time")
-	private OffsetTime closeTime;
+	private LocalTime closeTime;
 	
 	public Long getId() {
 		return id;
@@ -39,6 +41,12 @@ public class OfficeHour {
 	public void setId(Long id) {
 		this.id = id;
 	}
+//	public Office getOffice() {
+//		return office;
+//	}
+//	public void setOffice(Office office) {
+//		this.office = office;
+//	}
 	public Long getOfficeId() {
 		return officeId;
 	}
@@ -51,16 +59,16 @@ public class OfficeHour {
 	public void setDay(int day) {
 		this.day = day;
 	}
-	public OffsetTime getOpenTime() {
+	public LocalTime getOpenTime() {
 		return openTime;
 	}
-	public void setOpenTime(OffsetTime openTime) {
+	public void setOpenTime(LocalTime openTime) {
 		this.openTime = openTime;
 	}
-	public OffsetTime getCloseTime() {
+	public LocalTime getCloseTime() {
 		return closeTime;
 	}
-	public void setCloseTime(OffsetTime closeTime) {
+	public void setCloseTime(LocalTime closeTime) {
 		this.closeTime = closeTime;
 	}
 

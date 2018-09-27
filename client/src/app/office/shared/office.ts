@@ -8,5 +8,4 @@ export class Office {
     city: string;
     state: string;
     zipcode: number;
-    props?: any;
 }

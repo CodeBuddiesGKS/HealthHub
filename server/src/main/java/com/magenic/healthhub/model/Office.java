@@ -1,10 +1,16 @@
 package com.magenic.healthhub.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -34,6 +40,10 @@ public class Office {
 	private String state;
 	@Column(name = "zipcode")
 	private int zipcode;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "office_id")
+//	@OneToMany(mappedBy = "office", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OfficeHour> hours = new ArrayList<OfficeHour>();
 	
 	public Long getId() {
 		return id;
@@ -88,6 +98,12 @@ public class Office {
 	}
 	public void setZipcode(int zipcode) {
 		this.zipcode = zipcode;
+	}
+	public List<OfficeHour> getHours() {
+		return hours;
+	}
+	public void setHours(List<OfficeHour> hours) {
+		this.hours = hours;
 	}
 	
 }

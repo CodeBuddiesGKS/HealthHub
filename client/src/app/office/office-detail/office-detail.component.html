@@ -1,3 +1,302 @@
-<p>
-  office-detail works!
-</p>
+<div fxLayout="row wrap">
+  <div fxLayout="row wrap"
+    fxFlex="90" fxFlexOffset="5"
+    fxFlex.xs="100" fxFlexOffset.xs="0">
+    <div fxLayout="row wrap"
+      fxFlex="33" fxFlexOffset="33"
+      fxFlex.md="50" fxFlexOffset.md="25"
+      fxFlex.sm="70" fxFlexOffset.sm="15"
+      fxFlex.xs="96" fxFlexOffset.xs="2">
+      <h2 fxFlex="100">{{pageTitle}}</h2>
+      <form fxLayout="row wrap" fxFlex="100" [formGroup]="officeDetailForm">
+        <h4 fxFlex="100">General Info</h4>
+        <!-- Title - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Title</mat-label>
+          <input matInput
+            type="text"
+            name="title"
+            placeholder="Title"
+            formControlName="title"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <h4 fxFlex="100">Contact Info</h4>
+        <!-- Phone - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Phone</mat-label>
+          <input matInput
+            type="text"
+            name="phone"
+            placeholder="Phone"
+            formControlName="phone"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <h4 fxFlex="100">Address Info</h4>
+        <!-- Address - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Address</mat-label>
+          <input matInput
+            type="text"
+            name="address1"
+            placeholder="Address"
+            formControlName="address1"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- Address2 - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Address 2</mat-label>
+          <input matInput
+            type="text"
+            name="address2"
+            placeholder="Address 2"
+            formControlName="address2">
+        </mat-form-field>
+        <!-- Address3 - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Address 3</mat-label>
+          <input matInput
+            type="text"
+            name="address3"
+            placeholder="Address 3"
+            formControlName="address3">
+        </mat-form-field>
+        <!-- City - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>City</mat-label>
+          <input matInput
+            type="text"
+            name="city"
+            placeholder="City"
+            formControlName="city"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- State - Select -->
+        <mat-form-field
+          fxFlex="49" fxFlex.xs="100">
+          <mat-select
+            placeholder="State"
+            formControlName="state"
+            name="state"
+            required>
+            <mat-option *ngFor="let state of states" [value]="state.value">{{state.name}}</mat-option>
+          </mat-select>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <!-- Zipcode - number -->
+        <mat-form-field
+          fxFlex="49" fxFlexOffset="2"
+          fxFlex.xs="100" fxFlexOffset.xs="0">
+          <mat-label>Zipcode</mat-label>
+          <input matInput
+            type="number"
+            name="zipcode"
+            placeholder="Zipcode"
+            formControlName="zipcode"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <h4 fxFlex="100">Hours</h4>
+        <div formGroupName="sundayHours"
+          fxLayout="row wrap"
+          fxFlex="100">
+          <!-- Sunday Open Time - TimePicker -->
+          <mat-form-field fxFlex="49">
+            <input
+              matInput
+              type="time"
+              name="sundayOpenTime"
+              placeholder="Sunday Open Time"
+              formControlName="openTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+          <!-- Sunday Close Time - TimePicker -->
+          <mat-form-field fxFlex="49" fxFlexOffset="2">
+            <input
+              matInput
+              type="time"
+              name="sundayCloseTime"
+              placeholder="Sunday Close Time"
+              formControlName="closeTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div formGroupName="mondayHours"
+          fxLayout="row wrap"
+          fxFlex="100">
+          <!-- Monday Open Time - TimePicker -->
+          <mat-form-field fxFlex="49">
+            <input
+              matInput
+              type="time"
+              name="mondayOpenTime"
+              placeholder="Monday Open Time"
+              formControlName="openTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+          <!-- Monday Close Time - TimePicker -->
+          <mat-form-field fxFlex="49" fxFlexOffset="2">
+            <input
+              matInput
+              type="time"
+              name="mondayCloseTime"
+              placeholder="Monday Close Time"
+              formControlName="closeTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div formGroupName="tuesdayHours"
+          fxLayout="row wrap"
+          fxFlex="100">
+          <!-- Tuesday Open Time - TimePicker -->
+          <mat-form-field fxFlex="49">
+            <input
+              matInput
+              type="time"
+              name="tuesdayOpenTime"
+              placeholder="Tuesday Open Time"
+              formControlName="openTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+          <!-- Tuesday Close Time - TimePicker -->
+          <mat-form-field fxFlex="49" fxFlexOffset="2">
+            <input
+              matInput
+              type="time"
+              name="tuesdayCloseTime"
+              placeholder="Tuesday Close Time"
+              formControlName="closeTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div formGroupName="wednesdayHours"
+          fxLayout="row wrap"
+          fxFlex="100">
+          <!-- Wednesday Open Time - TimePicker -->
+          <mat-form-field fxFlex="49">
+            <input
+              matInput
+              type="time"
+              name="wednesdayOpenTime"
+              placeholder="Wednesday Open Time"
+              formControlName="openTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+          <!-- Wednesday Close Time - TimePicker -->
+          <mat-form-field fxFlex="49" fxFlexOffset="2">
+            <input
+              matInput
+              type="time"
+              name="wednesdayCloseTime"
+              placeholder="Wednesday Close Time"
+              formControlName="closeTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div formGroupName="thursdayHours"
+          fxLayout="row wrap"
+          fxFlex="100">
+          <!-- Thursday Open Time - TimePicker -->
+          <mat-form-field fxFlex="49">
+            <input
+              matInput
+              type="time"
+              name="thursdayOpenTime"
+              placeholder="Thursday Open Time"
+              formControlName="openTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+          <!-- Thursday Close Time - TimePicker -->
+          <mat-form-field fxFlex="49" fxFlexOffset="2">
+            <input
+              matInput
+              type="time"
+              name="thursdayCloseTime"
+              placeholder="Thursday Close Time"
+              formControlName="closeTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div formGroupName="fridayHours"
+          fxLayout="row wrap"
+          fxFlex="100">
+          <!-- Friday Open Time - TimePicker -->
+          <mat-form-field fxFlex="49">
+            <input
+              matInput
+              type="time"
+              name="fridayOpenTime"
+              placeholder="Friday Open Time"
+              formControlName="openTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+          <!-- Friday Close Time - TimePicker -->
+          <mat-form-field fxFlex="49" fxFlexOffset="2">
+            <input
+              matInput
+              type="time"
+              name="fridayCloseTime"
+              placeholder="Friday Close Time"
+              formControlName="closeTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div formGroupName="saturdayHours"
+          fxLayout="row wrap"
+          fxFlex="100">
+          <!-- Saturday Open Time - TimePicker -->
+          <mat-form-field fxFlex="49">
+            <input
+              matInput
+              type="time"
+              name="saturdayOpenTime"
+              placeholder="Saturday Open Time"
+              formControlName="openTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+          <!-- Saturday Close Time - TimePicker -->
+          <mat-form-field fxFlex="49" fxFlexOffset="2">
+            <input
+              matInput
+              type="time"
+              name="saturdayCloseTime"
+              placeholder="Saturday Close Time"
+              formControlName="closeTime"
+              required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center" fxFlex="100" class="button-row final-page-section">
+      <button mat-stroked-button class="button-row-item" (click)="cancel()">Cancel</button>
+      <button mat-flat-button color="accent" class="button-row-item" (click)="save()">Save</button>
+    </div>
+  </div>
+</div>
+  
+<!-- id: number;
+title: string;
+phone: string;
+address1: string;
+address2: string;
+address3: string;
+city: string;
+state: string;
+zipcode: number; -->

@@ -9,8 +9,9 @@
       fxFlex.xs="96" fxFlexOffset.xs="2">
       <h2 fxFlex="100">{{pageTitle}}</h2>
       <form fxLayout="row wrap" fxFlex="100" [formGroup]="patientDetailForm">
+        <h4 fxFlex="100">General Info</h4>
         <!-- First Name - text -->
-        <mat-form-field fxFlex="100">
+        <mat-form-field fxFlex="49" fxFlex.xs="100">
           <mat-label>First Name</mat-label>
           <input matInput
             type="text"
@@ -21,7 +22,9 @@
           <mat-error>This field is required</mat-error>
         </mat-form-field>
         <!-- Last Name - text -->
-        <mat-form-field fxFlex="100">
+        <mat-form-field
+          fxFlex="49" fxFlexOffset="2"
+          fxFlex.xs="100" fxFlexOffset.xs="0">
           <mat-label>Last Name</mat-label>
           <input matInput
             type="text"
@@ -32,7 +35,7 @@
           <mat-error>This field is required</mat-error>
         </mat-form-field>
         <!-- Date of Birth - Datepicker -->
-        <mat-form-field fxFlex="100">
+        <mat-form-field fxFlex="49" fxFlex.xs="100">
           <input
             matInput
             [matDatepicker]="birthDatePicker"
@@ -43,6 +46,18 @@
           <mat-error>This field is required</mat-error>
           <mat-datepicker-toggle matSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #birthDatePicker></mat-datepicker>
+        </mat-form-field>
+        <h4 fxFlex="100">Contact Info</h4>
+        <!-- Phone - text -->
+        <mat-form-field fxFlex="100">
+          <mat-label>Phone</mat-label>
+          <input matInput
+            type="text"
+            name="phone"
+            placeholder="Phone"
+            formControlName="phone"
+            required>
+          <mat-error>This field is required</mat-error>
         </mat-form-field>
         <!-- Email - text -->
         <mat-form-field fxFlex="100">
@@ -55,17 +70,7 @@
             required>
           <mat-error>This field is required</mat-error>
         </mat-form-field>
-        <!-- Phone - text -->
-        <mat-form-field fxFlex="100">
-          <mat-label>Phone</mat-label>
-          <input matInput
-            type="text"
-            name="phone"
-            placeholder="Phone"
-            formControlName="phone"
-            required>
-          <mat-error>This field is required</mat-error>
-        </mat-form-field>
+        <h4 fxFlex="100">Address Info</h4>
         <!-- Address - text -->
         <mat-form-field fxFlex="100">
           <mat-label>Address</mat-label>
@@ -106,19 +111,22 @@
             required>
           <mat-error>This field is required</mat-error>
         </mat-form-field>
-        <!-- State - text -->
-        <mat-form-field fxFlex="100">
-          <mat-label>State</mat-label>
-          <input matInput
-            type="text"
-            name="state"
+        <!-- State - Select -->
+        <mat-form-field
+          fxFlex="49" fxFlex.xs="100">
+          <mat-select
             placeholder="State"
             formControlName="state"
+            name="state"
             required>
+            <mat-option *ngFor="let state of states" [value]="state.value">{{state.name}}</mat-option>
+          </mat-select>
           <mat-error>This field is required</mat-error>
         </mat-form-field>
         <!-- Zipcode - number -->
-        <mat-form-field fxFlex="50">
+        <mat-form-field
+          fxFlex="49" fxFlexOffset="2"
+          fxFlex.xs="100" fxFlexOffset.xs="0">
           <mat-label>Zipcode</mat-label>
           <input matInput
             type="number"

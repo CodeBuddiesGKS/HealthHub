@@ -7,6 +7,7 @@ import { PatientService } from '../shared/patient.service';
 
 import { Patient } from '../shared/patient';
 
+import { STATES } from '../../core/models/states';
 import * as moment from 'moment';
 
 @Component({
@@ -21,6 +22,7 @@ export class PatientDetailComponent implements OnInit {
     public patientDetailForm: FormGroup;
     public patientEntity: Patient;
     public returnUrl: string;
+    public states: any[];
 
     constructor(private messageService: MessageService,
                 private patientService: PatientService,
@@ -32,6 +34,7 @@ export class PatientDetailComponent implements OnInit {
         this.id = +this.route.snapshot.paramMap.get('id');
         this.editMode = !!this.id;
         this.pageTitle = this.editMode ? 'Edit Patient' : 'Add Patient';
+        this.states = STATES;
 
         this.patientDetailForm = new FormGroup({
             firstName: new FormControl(""),

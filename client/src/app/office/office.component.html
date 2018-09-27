@@ -15,64 +15,68 @@
     fxFlex.lt-md="100" fxFlexOffset.lt-md="0"
     class="office-grid final-page-section"
     *ngIf="offices">
-    <span *ngFor="let office of offices"
-      class="office-card">
+    <span *ngFor="let office of offices">
       <mat-card>
-        <mat-card-header
-          fxLayout="row wrap"
-          fxLayoutAlign="center"
-          class="office-card-header">
+        <mat-card-header fxLayout="row" fxLayoutAlign="center">
           <h2>{{office.title}}</h2>
         </mat-card-header>
-        <mat-card-content
-          fxLayout="row wrap"
-          class="office-card-body">
-          <div fxFlex="100">
-            <strong>Phone:</strong>
-            <div class="office-card-body-section">{{office.phone}}</div>
-          </div>
-
-          <div fxFlex="100">
-            <strong>Address:</strong>
-            <div class="office-card-body-section">
-              <div>{{office.address1}}</div>
-              <div *ngIf="office.address2">{{office.address2}}</div>   
-              <div *ngIf="office.address3">{{office.address3}}</div>
-              <div>{{office.city}}, {{office.state}}</div>
-              <div>{{office.zipcode}}</div>
-            </div>
-          </div>
-
-          <div fxFlex="100">
-            <strong>Hours:</strong>
-            <table class="office-card-body-section">
-                <tr><th align="left">Sun:</th><td align="right">10am</td><td>-</td><td>5pm</td></tr>
-                <tr><th align="left">Mon:</th><td align="right">8am</td><td>-</td><td>10pm</td></tr>
-                <tr><th align="left">Tues:</th><td align="right">8am</td><td>-</td><td>10pm</td></tr>
-                <tr><th align="left">Wed:</th><td align="right">8am</td><td>-</td><td>10pm</td></tr>
-                <tr><th align="left">Thur:</th><td align="right">8am</td><td>-</td><td>10pm</td></tr>
-                <tr><th align="left">Fri:</th><td align="right">8am</td><td>-</td><td>10pm</td></tr>
-                <tr><th align="left">Sat:</th><td align="right">10am</td><td>-</td><td>6pm</td></tr>
-            </table>
-          </div>
-
-          <div fxFlex="100" *ngIf="office.openPhysiciansList && office.physicians">
-            <strong>Physicians:</strong>
-            <div class="office-card-body-section" *ngFor="let doctor of office.physicians">
-              {{doctor.firstName}} {{doctor.lastName}}
-            </div>
-          </div>
-
-          <button
-            fxFlex="100"
-            mat-raised-button
-            color="accent"
-            (click)="viewPhysicians(office)">
-            <mat-icon class="icon-shift" *ngIf="!office.openPhysiciansList">expand_more</mat-icon>
-            <mat-icon class="icon-shift" *ngIf="office.openPhysiciansList">expand_less</mat-icon>
-            <span>{{office.props.physiciansButtonLabel}}</span>
-          </button>
+        <mat-card-content>
+          <mat-accordion style="width: 100%">
+            <!-- Phone Expansion Panel -->
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Phone</mat-panel-title>
+              </mat-expansion-panel-header>
+              <div>{{office.phone}}</div>
+            </mat-expansion-panel>
+            <!-- Address Expansion Panel -->
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Address</mat-panel-title>
+              </mat-expansion-panel-header>
+              <div>
+                <div>{{office.address1}}</div>
+                <div *ngIf="office.address2">{{office.address2}}</div>   
+                <div *ngIf="office.address3">{{office.address3}}</div>
+                <div>{{office.city}}, {{office.state}}</div>
+                <div>{{office.zipcode}}</div>
+              </div>
+            </mat-expansion-panel>
+            <!-- Hours Expansion Panel -->
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Hours</mat-panel-title>
+              </mat-expansion-panel-header>
+              <table>
+                <tr><th align="left">Sun:</th><td align="right">10:00 am</td><td>-</td><td>5:00 pm</td></tr>
+                <tr><th align="left">Mon:</th><td align="right">8:00 am</td><td>-</td><td>10:00 pm</td></tr>
+                <tr><th align="left">Tues:</th><td align="right">8:00 am</td><td>-</td><td>10:00 pm</td></tr>
+                <tr><th align="left">Wed:</th><td align="right">8:00 am</td><td>-</td><td>10:00 pm</td></tr>
+                <tr><th align="left">Thur:</th><td align="right">8:00 am</td><td>-</td><td>10:00 pm</td></tr>
+                <tr><th align="left">Fri:</th><td align="right">8:00 am</td><td>-</td><td>10:00 pm</td></tr>
+                <tr><th align="left">Sat:</th><td align="right">10:00 am</td><td>-</td><td>6:00 pm</td></tr>
+              </table>
+            </mat-expansion-panel>
+            <!-- Physicians Expansion Panel -->
+            <mat-expansion-panel (opened)="openPhysicians(office)">
+              <mat-expansion-panel-header>
+                <mat-panel-title>Physicians</mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngFor="let doctor of office.physicians">
+                <div>{{doctor.firstName}} {{doctor.lastName}}</div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
         </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button
+            fxFlex="100"
+            (click)="navigate('/officeDetail/' + office.id)"
+            color="accent">
+            <mat-icon class="icon-shift">edit</mat-icon>
+            <span>Edit Office</span>
+          </button>
+        </mat-card-actions>
       </mat-card>
     </span>
   </div>
