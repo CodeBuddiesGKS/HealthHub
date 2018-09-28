@@ -48,13 +48,13 @@
                 <mat-panel-title>Hours</mat-panel-title>
               </mat-expansion-panel-header>
               <table>
-                <tr><th align="left">Sun:</th><td align="right">10:00 am</td><td>-</td><td>5:00 pm</td></tr>
-                <tr><th align="left">Mon:</th><td align="right">8:00 am</td><td>-</td><td>10:00 pm</td></tr>
-                <tr><th align="left">Tues:</th><td align="right">8:00 am</td><td>-</td><td>10:00 pm</td></tr>
-                <tr><th align="left">Wed:</th><td align="right">8:00 am</td><td>-</td><td>10:00 pm</td></tr>
-                <tr><th align="left">Thur:</th><td align="right">8:00 am</td><td>-</td><td>10:00 pm</td></tr>
-                <tr><th align="left">Fri:</th><td align="right">8:00 am</td><td>-</td><td>10:00 pm</td></tr>
-                <tr><th align="left">Sat:</th><td align="right">10:00 am</td><td>-</td><td>6:00 pm</td></tr>
+                <tr><th align="left">Sun:</th><td align="right">{{office.hours[0]?.openTime}}</td><td>-</td><td>{{office.hours[0]?.closeTime}}</td></tr>
+                <tr><th align="left">Mon:</th><td align="right">{{office.hours[1]?.openTime}}</td><td>-</td><td>{{office.hours[1]?.closeTime}}</td></tr>
+                <tr><th align="left">Tues:</th><td align="right">{{office.hours[2]?.openTime}}</td><td>-</td><td>{{office.hours[2]?.closeTime}}</td></tr>
+                <tr><th align="left">Wed:</th><td align="right">{{office.hours[3]?.openTime}}</td><td>-</td><td>{{office.hours[3]?.closeTime}}</td></tr>
+                <tr><th align="left">Thur:</th><td align="right">{{office.hours[4]?.openTime}}</td><td>-</td><td>{{office.hours[4]?.closeTime}}</td></tr>
+                <tr><th align="left">Fri:</th><td align="right">{{office.hours[5]?.openTime}}</td><td>-</td><td>{{office.hours[5]?.closeTime}}</td></tr>
+                <tr><th align="left">Sat:</th><td align="right">{{office.hours[6]?.openTime}}</td><td>-</td><td>{{office.hours[6]?.closeTime}}</td></tr>
               </table>
             </mat-expansion-panel>
             <!-- Physicians Expansion Panel -->

@@ -119,7 +119,9 @@
             formControlName="state"
             name="state"
             required>
-            <mat-option *ngFor="let state of states" [value]="state.value">{{state.name}}</mat-option>
+            <mat-option
+              *ngFor="let state of states"
+              [value]="state.value">{{state.name}}</mat-option>
           </mat-select>
           <mat-error>This field is required</mat-error>
         </mat-form-field>

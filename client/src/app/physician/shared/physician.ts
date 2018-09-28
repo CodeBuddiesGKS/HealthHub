@@ -1,4 +1,3 @@
-import { Gender } from "./gender";
 
 export class Physician {
     constructor() {
@@ -18,5 +17,5 @@ export class Physician {
     employmentDate: string;
     email: string;
     phone: string;
-    gender: Gender;
+    gender: string;
 }

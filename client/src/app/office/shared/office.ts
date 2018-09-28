@@ -8,4 +8,5 @@ export class Office {
     city: string;
     state: string;
     zipcode: number;
+    hours: any[];
 }

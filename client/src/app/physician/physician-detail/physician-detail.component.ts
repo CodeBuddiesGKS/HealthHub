@@ -15,6 +15,7 @@ import { PhysicianService } from '../shared/physician.service';
 import { Office } from '../../office/shared/office';
 import { Physician } from '../shared/physician';
 
+import { GENDERS } from '../shared/genders';
 import { Observable, forkJoin, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -40,6 +41,7 @@ function autocompleteMatchValidator(officeList): ValidatorFn {
 export class PhysicianDetailComponent implements OnInit {
     public editMode: boolean;
     public filteredOffices: Observable<Office[]>;
+    public genders: any[];
     public id: number;
     public offices: Office[];
     public pageTitle: string;
@@ -57,6 +59,7 @@ export class PhysicianDetailComponent implements OnInit {
         this.returnUrl = '/home/4';
         this.id = +this.route.snapshot.paramMap.get('id');
         this.editMode = !!this.id;
+        this.genders = GENDERS;
         this.pageTitle = this.editMode ? 'Edit Physician' : 'Add Physician';
 
         this.physicianDetailForm = new FormGroup({

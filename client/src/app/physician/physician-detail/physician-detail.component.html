@@ -41,8 +41,9 @@
             formControlName="gender"
             name="gender"
             required>
-            <mat-option value="m">Male</mat-option>
-            <mat-option value="f">Female</mat-option>
+            <mat-option
+              *ngFor="let gender of genders"
+              [value]="gender.value">{{gender.name}}</mat-option>
           </mat-select>
           <mat-error>This field is required</mat-error>
         </mat-form-field>

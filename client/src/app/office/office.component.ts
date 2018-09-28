@@ -7,6 +7,8 @@ import { PhysicianService } from '../physician/shared/physician.service';
 
 import { Office } from './shared/office';
 
+import * as moment from 'moment';
+
 @Component({
     selector: 'app-office',
     templateUrl: './office.component.html',
@@ -32,6 +34,19 @@ export class OfficeComponent implements OnInit {
             } else {
                 this.offices = offices;
                 this.offices.forEach(office => {
+                    // Guarentee each officeHour is:
+                    // sorted 0-6
+                    // only has 1 item for each day
+                    // has the times formatted
+                    let newHours = Array(7);
+                    for (let i=0; i < 7; i++) {
+                        newHours[i] = Object.assign({}, office.hours.find(hour => hour.day === i));
+                        if (newHours[i]) {
+                            newHours[i].openTime = moment(newHours[i].openTime, 'HH:mm:ss').format('h:mm a');
+                            newHours[i].closeTime = moment(newHours[i].closeTime, 'HH:mm:ss').format('h:mm a');
+                        }
+                    }
+                    office.hours = newHours;
                 });
             }
         });
