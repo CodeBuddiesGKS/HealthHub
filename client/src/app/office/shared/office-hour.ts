@@ -1,7 +1,7 @@
 export class OfficeHour {
-    constructor(day: number) {
-        this.id = null;
-        this.officeId = null;
+    constructor(id: number, officeId: number, day: number) {
+        this.id = id;
+        this.officeId = officeId;
         this.day = day;
     }
     id: number;

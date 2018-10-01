@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -23,11 +24,15 @@ public class OfficeHour {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
-//	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Office.class, optional = false)
-//    @JoinColumn(name = "office_id", nullable = false)
-//	private Office office;
-	@Column(name = "office_id")
-	private Long officeId;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(
+		name = "office_id",
+		referencedColumnName = "id",
+		nullable = false,
+		updatable = false,
+		insertable = true
+	)
+	private Office office;
 	@Column(name = "day")
 	private int day;
 	@Column(name = "open_time")
@@ -41,17 +46,12 @@ public class OfficeHour {
 	public void setId(Long id) {
 		this.id = id;
 	}
-//	public Office getOffice() {
-//		return office;
-//	}
-//	public void setOffice(Office office) {
-//		this.office = office;
-//	}
-	public Long getOfficeId() {
-		return officeId;
+	@JsonIgnore
+	public Office getOffice() {
+		return office;
 	}
-	public void setOfficeId(Long officeId) {
-		this.officeId = officeId;
+	public void setOffice(Office office) {
+		this.office = office;
 	}
 	public int getDay() {
 		return day;

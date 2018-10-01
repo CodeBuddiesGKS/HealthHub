@@ -1,3 +1,5 @@
+import { OfficeHour } from "./office-hour";
+
 export class Office {
     id: number;
     title: string;
@@ -8,5 +10,5 @@ export class Office {
     city: string;
     state: string;
     zipcode: number;
-    hours: any[];
+    hours: OfficeHour[];
 }

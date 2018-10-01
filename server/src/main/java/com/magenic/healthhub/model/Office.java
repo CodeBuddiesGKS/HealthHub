@@ -40,10 +40,11 @@ public class Office {
 	private String state;
 	@Column(name = "zipcode")
 	private int zipcode;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "office_id")
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "office_id", referencedColumnName="id")
 //	@OneToMany(mappedBy = "office", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OfficeHour> hours = new ArrayList<OfficeHour>();
+	@OneToMany(mappedBy = "office", cascade = CascadeType.ALL)
+    private List<OfficeHour> hours;
 	
 	public Long getId() {
 		return id;
@@ -105,5 +106,21 @@ public class Office {
 	public void setHours(List<OfficeHour> hours) {
 		this.hours = hours;
 	}
+	public void addOfficeHour(OfficeHour hour) {
+		if (hour == null) {
+			return;
+		}
+		hour.setOffice(this);
+		if (this.hours == null) {
+			this.hours = new ArrayList<OfficeHour>();
+			this.hours.add(hour);
+		} else if (!this.hours.contains(hour)) {
+			this.hours.add(hour);
+		}
+	}
+//	public void removeOfficeHour(OfficeHour hour) {
+//		this.hours.remove(hour);
+//		hour.setOffice(null);
+//	}
 	
 }
