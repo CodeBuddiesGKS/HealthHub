@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
-import { MessageService } from '../../core/message.service';
+import { MessageService } from '../../core/message/message.service';
 import { OfficeService } from '../shared/office.service';
+import { UtilityService } from '../../core/utility/utility.service';
 
 import { Office } from '../shared/office';
 import { OfficeHour } from '../shared/office-hour';
@@ -28,10 +29,10 @@ export class OfficeDetailComponent implements OnInit {
     constructor(private messageService: MessageService,
         private officeService: OfficeService,
         private route: ActivatedRoute,
-        private router: Router) { }
+        private utilityService: UtilityService) { }
 
     ngOnInit() {
-        this.returnUrl = '/home/3';
+        this.returnUrl = '/office';
         this.id = +this.route.snapshot.paramMap.get('id');
         this.editMode = !!this.id;
         this.pageTitle = this.editMode ? 'Edit Office' : 'Add Office';
@@ -110,8 +111,7 @@ export class OfficeDetailComponent implements OnInit {
     }
 
     cancel() {
-        // Confirmation Dialog
-        this.router.navigateByUrl(this.returnUrl);
+        this.utilityService.reroute(this.returnUrl);
     }
 
     save() {
@@ -164,7 +164,7 @@ export class OfficeDetailComponent implements OnInit {
                         this.messageService.error('Error - Unable to create office.');
                     } else {
                         this.messageService.success('Office was successfully created!');
-                        this.router.navigateByUrl(this.returnUrl);
+                        this.utilityService.reroute(this.returnUrl);
                     }
                 });
             } else {
@@ -173,7 +173,7 @@ export class OfficeDetailComponent implements OnInit {
                         this.messageService.error('Error - Unable to save office.');
                     } else {
                         this.messageService.success('Office was successfully saved!');
-                        this.router.navigateByUrl(this.returnUrl);
+                        this.utilityService.reroute(this.returnUrl);
                     }
                 });
             }

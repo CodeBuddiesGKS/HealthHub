@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
-import { MessageService } from '../core/message.service';
+import { MessageService } from '../core/message/message.service';
 import { OfficeService } from './shared/office.service';
 import { PhysicianService } from '../physician/shared/physician.service';
+import { UtilityService } from '../core/utility/utility.service';
 
 import { Office } from './shared/office';
 
@@ -21,7 +21,7 @@ export class OfficeComponent implements OnInit {
     constructor(private messageService: MessageService,
                 private officeService: OfficeService,
                 private physicianService: PhysicianService,
-                private router: Router) { }
+                private utilityService: UtilityService) { }
 
     ngOnInit() {
         this.getOffices();
@@ -50,10 +50,6 @@ export class OfficeComponent implements OnInit {
                 });
             }
         });
-    }
-
-    navigate(path: string) {
-        this.router.navigateByUrl(path);
     }
 
     openPhysicians(office) {

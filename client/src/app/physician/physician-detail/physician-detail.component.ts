@@ -6,11 +6,12 @@ import {
     FormGroup,
     Validators
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
-import { MessageService } from '../../core/message.service';
+import { MessageService } from '../../core/message/message.service';
 import { OfficeService } from '../../office/shared/office.service';
 import { PhysicianService } from '../shared/physician.service';
+import { UtilityService } from '../../core/utility/utility.service';
 
 import { Office } from '../../office/shared/office';
 import { Physician } from '../shared/physician';
@@ -53,10 +54,10 @@ export class PhysicianDetailComponent implements OnInit {
                 private officeService: OfficeService,
                 private physicianService: PhysicianService,
                 private route: ActivatedRoute,
-                private router: Router) { }
+                private utilityService: UtilityService) { }
 
     ngOnInit() {
-        this.returnUrl = '/home/4';
+        this.returnUrl = '/physician';
         this.id = +this.route.snapshot.paramMap.get('id');
         this.editMode = !!this.id;
         this.genders = GENDERS;
@@ -103,7 +104,7 @@ export class PhysicianDetailComponent implements OnInit {
 
     cancel() {
         // Confirmation Dialog
-        this.router.navigateByUrl(this.returnUrl);
+        this.utilityService.reroute(this.returnUrl);
     }
 
     displayOffice(office?: Office): string | undefined {
@@ -148,7 +149,7 @@ export class PhysicianDetailComponent implements OnInit {
                         this.messageService.error('Error - Unable to create physician.');
                     } else {
                         this.messageService.success('Physician was successfully created!');
-                        this.router.navigateByUrl(this.returnUrl);
+                        this.utilityService.reroute(this.returnUrl);
                     }
                 });
             } else {
@@ -157,7 +158,7 @@ export class PhysicianDetailComponent implements OnInit {
                         this.messageService.error('Error - Unable to save physician.');
                     } else {
                         this.messageService.success('Physician was successfully saved!');
-                        this.router.navigateByUrl(this.returnUrl);
+                        this.utilityService.reroute(this.returnUrl);
                     }
                 });
             }

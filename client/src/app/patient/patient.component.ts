@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 
 import {
     MatPaginator,
@@ -7,8 +6,9 @@ import {
     MatTableDataSource
 } from '@angular/material';
 
-import { MessageService } from '../core/message.service';
+import { MessageService } from '../core/message/message.service';
 import { PatientService } from './shared/patient.service';
+import { UtilityService } from '../core/utility/utility.service';
 
 import { Patient } from './shared/patient';
 
@@ -31,7 +31,7 @@ export class PatientComponent implements OnInit {
 
     constructor(private messageService: MessageService,
                 private patientService: PatientService,
-                private router: Router) { }
+                private utilityService: UtilityService) { }
 
     ngOnInit() {
         this.dataSource.paginator = this.paginator;
@@ -67,9 +67,5 @@ export class PatientComponent implements OnInit {
                 this.dataSource.data = patients;
             }
         });
-    }
-
-    navigate(path: string) {
-        this.router.navigateByUrl(path);
     }
 }

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
-import { MessageService } from '../../core/message.service';
+import { MessageService } from '../../core/message/message.service';
 import { PatientService } from '../shared/patient.service';
+import { UtilityService } from '../../core/utility/utility.service';
 
 import { Patient } from '../shared/patient';
 
@@ -27,10 +28,10 @@ export class PatientDetailComponent implements OnInit {
     constructor(private messageService: MessageService,
                 private patientService: PatientService,
                 private route: ActivatedRoute,
-                private router: Router) { }
+                private utilityService: UtilityService) { }
 
     ngOnInit() {
-        this.returnUrl = '/home';
+        this.returnUrl = '/patient';
         this.id = +this.route.snapshot.paramMap.get('id');
         this.editMode = !!this.id;
         this.pageTitle = this.editMode ? 'Edit Patient' : 'Add Patient';
@@ -72,8 +73,7 @@ export class PatientDetailComponent implements OnInit {
     }
 
     cancel() {
-        // Confirmation Dialog
-        this.router.navigateByUrl(this.returnUrl);
+        this.utilityService.reroute(this.returnUrl);
     }
 
     save() {
@@ -98,7 +98,7 @@ export class PatientDetailComponent implements OnInit {
                         this.messageService.error('Error - Unable to create patient.');
                     } else {
                         this.messageService.success('Patient was successfully created!');
-                        this.router.navigateByUrl(this.returnUrl);
+                        this.utilityService.reroute(this.returnUrl);
                     }
                 });
             } else {
@@ -107,7 +107,7 @@ export class PatientDetailComponent implements OnInit {
                         this.messageService.error('Error - Unable to save patient.');
                     } else {
                         this.messageService.success('Patient was successfully saved!');
-                        this.router.navigateByUrl(this.returnUrl);
+                        this.utilityService.reroute(this.returnUrl);
                     }
                 });
             }

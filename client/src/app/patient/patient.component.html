@@ -3,7 +3,7 @@
     <h2>Patient List</h2>
     <div fxFlex="1 1 auto"></div>
     <button fxFlexAlign="center"
-      (click)="navigate('/patientDetail')"
+      (click)="utilityService.reroute('/patientDetail')"
       color="accent"
       mat-raised-button>
       <mat-icon class="icon-shift">person_add</mat-icon>
@@ -42,11 +42,12 @@
             <mat-icon aria-label="Options icon-button">more_vert</mat-icon>
           </button>
           <mat-menu #optionMenu="matMenu">
-              <button mat-menu-item>
+              <button mat-menu-item
+                (click)="utilityService.reroute('/scheduler', {queryParams: {patientId: patient.id}})">
                 <mat-icon>calendar_today</mat-icon>
                 <span>Appointments</span>
               </button>
-            <button mat-menu-item (click)="navigate('/patientDetail/' + patient.id)">
+            <button mat-menu-item (click)="utilityService.reroute('/patientDetail/' + patient.id)">
               <mat-icon>edit</mat-icon>
               <span>Edit Patient</span>
             </button>

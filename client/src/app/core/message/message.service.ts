@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 
-import { NotificationMessage } from './models/notification-message';
+import { NotificationMessage } from '../models/notification-message';
 
 @Injectable({
     providedIn: 'root'

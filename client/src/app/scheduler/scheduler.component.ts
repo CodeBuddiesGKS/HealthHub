@@ -3,8 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 
 import { AppointmentService } from './shared/appointment.service';
-import { MessageService } from '../core/message.service';
-import { OfficeService } from '../office/shared/office.service';
+import { MessageService } from '../core/message/message.service';
 import { PatientService } from '../patient/shared/patient.service';
 import { PhysicianService } from '../physician/shared/physician.service';
 
@@ -38,31 +37,20 @@ export class SchedulerComponent implements OnInit {
     constructor(private appointmentService: AppointmentService,
                 private dialog: MatDialog,
                 private messageService: MessageService,
-                private officeService: OfficeService,
                 private patientService: PatientService,
                 private physicianService: PhysicianService) { }
 
     ngOnInit() {
         forkJoin(
-            // this.officeService.getOffices(),
             this.patientService.getPatients(),
             this.physicianService.getPhysicians(),
         ).subscribe(([patients, physicians]) => {
-            // if (!offices) this.messageService.error('Error - Unable to get offices.');
             if (!patients) this.messageService.error('Error - Unable to get physician.');
             if (!physicians) this.messageService.error('Error - Unable to get physician.');
             
-            // this.offices = offices;
             this.patients = patients;
             this.physicians = physicians;
             document.getElementById('timeslot6').scrollIntoView();
-
-            // this.officesWithNestedPhysicians = this.offices.map(office => {
-            //     office['physicians'] = this.physicians.filter(physician => {
-            //         return physician.officeId === office.id;
-            //     });
-            //     return office;
-            // });
         });
 
         this.appointmentDateControl.valueChanges.subscribe(() => this.refreshSchedules());

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatSnackBar } from '@angular/material'
 
-import { MessageService } from '../../core/message.service';
+import { MessageService } from '../../core/message/message.service';
 
 import { StatusMessageComponent } from './status-message/status-message.component';
 

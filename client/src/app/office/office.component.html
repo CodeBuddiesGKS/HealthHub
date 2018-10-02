@@ -5,7 +5,7 @@
     <span class="fill-remaining-space"></span>
     <button fxFlexAlign="center"
       mat-raised-button color="accent"
-      (click)="navigate('/officeDetail')">
+      (click)="utilityService.reroute('/officeDetail')">
       <mat-icon class="icon-shift">add_location</mat-icon>
       <span>Add Office</span>
     </button>
@@ -71,7 +71,7 @@
         <mat-card-actions>
           <button mat-raised-button
             fxFlex="100"
-            (click)="navigate('/officeDetail/' + office.id)"
+            (click)="utilityService.reroute('/officeDetail/' + office.id)"
             color="accent">
             <mat-icon class="icon-shift">edit</mat-icon>
             <span>Edit Office</span>

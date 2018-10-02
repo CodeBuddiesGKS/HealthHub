@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
     public name: string = 'Gavin';
+    public tabs: any[] = [
+        {label: "Patient", path: "/patient"},
+        {label: "Billing", path: "/billing"},
+        {label: "Scheduler", path: "/scheduler"},
+        {label: "Office Manager", path: "/office"},
+        {label: "Physician Directory", path: "/physician"},
+    ];
 
     constructor() { }
 

@@ -1,16 +1,15 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {
-    FormControl,
-    ValidatorFn,
     AbstractControl,
+    FormControl,
     FormGroup,
+    ValidatorFn,
     Validators
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
 
 import { AppointmentService } from '../shared/appointment.service';
-import { MessageService } from '../../core/message.service';
+import { MessageService } from '../../core/message/message.service';
 import { PatientService } from '../../patient/shared/patient.service';
 import { PhysicianService } from '../../physician/shared/physician.service';
 
@@ -55,8 +54,7 @@ export class AppointmentDetailDialogComponent implements OnInit {
                 private dialogRef: MatDialogRef<AppointmentDetailDialogComponent>,
                 private messageService: MessageService,
                 private patientService: PatientService,
-                private physicianService: PhysicianService,
-                private route: ActivatedRoute) { }
+                private physicianService: PhysicianService) { }
 
     ngOnInit() {
         this.id = this.data && +this.data.id;
