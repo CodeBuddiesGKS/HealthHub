@@ -6,6 +6,7 @@ import { AppointmentService } from './shared/appointment.service';
 import { MessageService } from '../core/message/message.service';
 import { PatientService } from '../patient/shared/patient.service';
 import { PhysicianService } from '../physician/shared/physician.service';
+import { UtilityService } from '../core/utility/utility.service';
 
 import { AppointmentDetailDialogComponent } from './appointment-detail-dialog/appointment-detail-dialog.component';
 
@@ -38,7 +39,8 @@ export class SchedulerComponent implements OnInit {
                 private dialog: MatDialog,
                 private messageService: MessageService,
                 private patientService: PatientService,
-                private physicianService: PhysicianService) { }
+                private physicianService: PhysicianService,
+                private utilityService: UtilityService) { }
 
     ngOnInit() {
         forkJoin(
@@ -51,6 +53,7 @@ export class SchedulerComponent implements OnInit {
             this.patients = patients;
             this.physicians = physicians;
             document.getElementById('timeslot6').scrollIntoView();
+            this.preselectSchedules();
         });
 
         this.appointmentDateControl.valueChanges.subscribe(() => this.refreshSchedules());
@@ -125,6 +128,18 @@ export class SchedulerComponent implements OnInit {
         let toolbarOffset = 13;
         
         return (hours * 12) + toolbarOffset + slotOffset;
+    }
+
+    preselectSchedules() {
+        let params = this.utilityService.getQueryParams();
+        if (params.patientId) {
+            let patient = this.patients.find(p => p.id === +params.patientId);
+            patient && this.changeSelectedSchedules({ selected: true, value: patient }, true);
+        }
+        if (params.physicianId) {
+            let physician = this.physicians.find(p => p.id === +params.physicianId);
+            physician && this.changeSelectedSchedules({ selected: true, value: physician }, false)
+        }
     }
 
     refreshSchedules() {

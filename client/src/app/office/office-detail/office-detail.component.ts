@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
 
 import { MessageService } from '../../core/message/message.service';
 import { OfficeService } from '../shared/office.service';
@@ -20,7 +19,7 @@ export class OfficeDetailComponent implements OnInit {
     public id: number;
     public editMode: boolean;
     public hours: OfficeHour[];
-    public officeDetailForm: FormGroup;
+    public form: FormGroup;
     public officeEntity: Office;
     public pageTitle: string;
     public returnUrl: string;
@@ -28,17 +27,16 @@ export class OfficeDetailComponent implements OnInit {
 
     constructor(private messageService: MessageService,
         private officeService: OfficeService,
-        private route: ActivatedRoute,
         private utilityService: UtilityService) { }
 
     ngOnInit() {
         this.returnUrl = '/office';
-        this.id = +this.route.snapshot.paramMap.get('id');
+        this.id = +this.utilityService.getRouteParam('id');
         this.editMode = !!this.id;
         this.pageTitle = this.editMode ? 'Edit Office' : 'Add Office';
         this.states = STATES;
 
-        this.officeDetailForm = new FormGroup({
+        this.form = new FormGroup({
             title: new FormControl(""),
             phone: new FormControl(""),
             address1: new FormControl(""),
@@ -82,14 +80,14 @@ export class OfficeDetailComponent implements OnInit {
                 if (!office) {
                     this.messageService.error('Error - Unable to get office.');
                 } else {
-                    this.officeDetailForm.controls.title.setValue(office.title);
-                    this.officeDetailForm.controls.phone.setValue(office.phone);
-                    this.officeDetailForm.controls.address1.setValue(office.address1);
-                    this.officeDetailForm.controls.address2.setValue(office.address2);
-                    this.officeDetailForm.controls.address3.setValue(office.address3);
-                    this.officeDetailForm.controls.city.setValue(office.city);
-                    this.officeDetailForm.controls.state.setValue(office.state);
-                    this.officeDetailForm.controls.zipcode.setValue(office.zipcode);
+                    this.form.controls.title.setValue(office.title);
+                    this.form.controls.phone.setValue(office.phone);
+                    this.form.controls.address1.setValue(office.address1);
+                    this.form.controls.address2.setValue(office.address2);
+                    this.form.controls.address3.setValue(office.address3);
+                    this.form.controls.city.setValue(office.city);
+                    this.form.controls.state.setValue(office.state);
+                    this.form.controls.zipcode.setValue(office.zipcode);
                     this.hours = office.hours;
                     office.hours && office.hours.forEach(officeHour => {
                         let day: string = "";
@@ -102,8 +100,8 @@ export class OfficeDetailComponent implements OnInit {
                             case 5: day = "fridayHours"; break;
                             case 6: day = "saturdayHours"; break;
                         }
-                        this.officeDetailForm.get(day + '.openTime').setValue(officeHour.openTime);
-                        this.officeDetailForm.get(day + '.closeTime').setValue(officeHour.closeTime);
+                        this.form.get(day + '.openTime').setValue(officeHour.openTime);
+                        this.form.get(day + '.closeTime').setValue(officeHour.closeTime);
                     });
                 }
             });
@@ -115,17 +113,17 @@ export class OfficeDetailComponent implements OnInit {
     }
 
     save() {
-        if (this.officeDetailForm.valid) {
+        if (this.form.valid) {
             this.officeEntity = new Office();
             this.officeEntity.id = this.id;
-            this.officeEntity.title = this.officeDetailForm.controls.title.value;
-            this.officeEntity.phone = this.officeDetailForm.controls.phone.value;
-            this.officeEntity.address1 = this.officeDetailForm.controls.address1.value;
-            this.officeEntity.address2 = this.officeDetailForm.controls.address2.value;
-            this.officeEntity.address3 = this.officeDetailForm.controls.address3.value;
-            this.officeEntity.city = this.officeDetailForm.controls.city.value;
-            this.officeEntity.state = this.officeDetailForm.controls.state.value;
-            this.officeEntity.zipcode = this.officeDetailForm.controls.zipcode.value;
+            this.officeEntity.title = this.form.controls.title.value;
+            this.officeEntity.phone = this.form.controls.phone.value;
+            this.officeEntity.address1 = this.form.controls.address1.value;
+            this.officeEntity.address2 = this.form.controls.address2.value;
+            this.officeEntity.address3 = this.form.controls.address3.value;
+            this.officeEntity.city = this.form.controls.city.value;
+            this.officeEntity.state = this.form.controls.state.value;
+            this.officeEntity.zipcode = this.form.controls.zipcode.value;
             let officeId = this.id ? this.id : null;
             let sunId = this.hours ? this.hours.find(hour => hour.day === 0).id : null;
             let monId = this.hours ? this.hours.find(hour => hour.day === 1).id : null;
@@ -143,20 +141,20 @@ export class OfficeDetailComponent implements OnInit {
                 new OfficeHour(friId, officeId, 5),
                 new OfficeHour(satId, officeId, 6)
             ];
-            this.officeEntity.hours[0].openTime = this.officeDetailForm.get('sundayHours.openTime').value;
-            this.officeEntity.hours[0].closeTime = this.officeDetailForm.get('sundayHours.closeTime').value;
-            this.officeEntity.hours[1].openTime = this.officeDetailForm.get('mondayHours.openTime').value;
-            this.officeEntity.hours[1].closeTime = this.officeDetailForm.get('mondayHours.closeTime').value;
-            this.officeEntity.hours[2].openTime = this.officeDetailForm.get('tuesdayHours.openTime').value;
-            this.officeEntity.hours[2].closeTime = this.officeDetailForm.get('tuesdayHours.closeTime').value;
-            this.officeEntity.hours[3].openTime = this.officeDetailForm.get('wednesdayHours.openTime').value;
-            this.officeEntity.hours[3].closeTime = this.officeDetailForm.get('wednesdayHours.closeTime').value;
-            this.officeEntity.hours[4].openTime = this.officeDetailForm.get('thursdayHours.openTime').value;
-            this.officeEntity.hours[4].closeTime = this.officeDetailForm.get('thursdayHours.closeTime').value;
-            this.officeEntity.hours[5].openTime = this.officeDetailForm.get('fridayHours.openTime').value;
-            this.officeEntity.hours[5].closeTime = this.officeDetailForm.get('fridayHours.closeTime').value;
-            this.officeEntity.hours[6].openTime = this.officeDetailForm.get('saturdayHours.openTime').value;
-            this.officeEntity.hours[6].closeTime = this.officeDetailForm.get('saturdayHours.closeTime').value;
+            this.officeEntity.hours[0].openTime = this.form.get('sundayHours.openTime').value;
+            this.officeEntity.hours[0].closeTime = this.form.get('sundayHours.closeTime').value;
+            this.officeEntity.hours[1].openTime = this.form.get('mondayHours.openTime').value;
+            this.officeEntity.hours[1].closeTime = this.form.get('mondayHours.closeTime').value;
+            this.officeEntity.hours[2].openTime = this.form.get('tuesdayHours.openTime').value;
+            this.officeEntity.hours[2].closeTime = this.form.get('tuesdayHours.closeTime').value;
+            this.officeEntity.hours[3].openTime = this.form.get('wednesdayHours.openTime').value;
+            this.officeEntity.hours[3].closeTime = this.form.get('wednesdayHours.closeTime').value;
+            this.officeEntity.hours[4].openTime = this.form.get('thursdayHours.openTime').value;
+            this.officeEntity.hours[4].closeTime = this.form.get('thursdayHours.closeTime').value;
+            this.officeEntity.hours[5].openTime = this.form.get('fridayHours.openTime').value;
+            this.officeEntity.hours[5].closeTime = this.form.get('fridayHours.closeTime').value;
+            this.officeEntity.hours[6].openTime = this.form.get('saturdayHours.openTime').value;
+            this.officeEntity.hours[6].closeTime = this.form.get('saturdayHours.closeTime').value;
 
             if (!this.editMode) {
                 this.officeService.createOffice(this.officeEntity).subscribe(office => {
@@ -178,23 +176,7 @@ export class OfficeDetailComponent implements OnInit {
                 });
             }
         } else {
-            Object.keys(this.officeDetailForm.controls).forEach(field => {
-                const control = this.officeDetailForm.get(field);
-                control.markAsTouched({ onlySelf: true });
-            });
-            // Use this if nested
-            // this.validateAllFormFields(this.officeDetailForm);
+            this.utilityService.validateAllFormFields(this.form);
         }
     }
-
-    // private validateAllFormFields(formGroup: FormGroup) {
-    //     Object.keys(formGroup.controls).forEach(field => {
-    //         const control = formGroup.get(field);
-    //         if (control instanceof FormControl) {
-    //             control.markAsTouched({ onlySelf: true });
-    //         } else if (control instanceof FormGroup) {
-    //             this.validateAllFormFields(control);
-    //         }
-    //     });
-    // }
 }

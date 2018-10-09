@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 
 import { MessageService } from '../../core/message/message.service';
 import { PatientService } from '../shared/patient.service';
@@ -20,24 +19,23 @@ export class PatientDetailComponent implements OnInit {
     public id: number;
     public editMode: boolean;
     public pageTitle: string;
-    public patientDetailForm: FormGroup;
+    public form: FormGroup;
     public patientEntity: Patient;
     public returnUrl: string;
     public states: any[];
 
     constructor(private messageService: MessageService,
                 private patientService: PatientService,
-                private route: ActivatedRoute,
                 private utilityService: UtilityService) { }
 
     ngOnInit() {
         this.returnUrl = '/patient';
-        this.id = +this.route.snapshot.paramMap.get('id');
+        this.id = +this.utilityService.getRouteParam('id');
         this.editMode = !!this.id;
         this.pageTitle = this.editMode ? 'Edit Patient' : 'Add Patient';
         this.states = STATES;
 
-        this.patientDetailForm = new FormGroup({
+        this.form = new FormGroup({
             firstName: new FormControl(""),
             lastName: new FormControl(""),
             birthDate: new FormControl(""),
@@ -56,17 +54,17 @@ export class PatientDetailComponent implements OnInit {
                 if (!patient) {
                     this.messageService.error('Error - Unable to get patient.');
                 } else {
-                    this.patientDetailForm.controls.firstName.setValue(patient.firstName);
-                    this.patientDetailForm.controls.lastName.setValue(patient.lastName);
-                    this.patientDetailForm.controls.birthDate.setValue(moment(patient.birthDate));
-                    this.patientDetailForm.controls.email.setValue(patient.email);
-                    this.patientDetailForm.controls.phone.setValue(patient.phone);
-                    this.patientDetailForm.controls.address1.setValue(patient.address1);
-                    this.patientDetailForm.controls.address2.setValue(patient.address2);
-                    this.patientDetailForm.controls.address3.setValue(patient.address3);
-                    this.patientDetailForm.controls.city.setValue(patient.city);
-                    this.patientDetailForm.controls.state.setValue(patient.state);
-                    this.patientDetailForm.controls.zipcode.setValue(patient.zipcode);
+                    this.form.controls.firstName.setValue(patient.firstName);
+                    this.form.controls.lastName.setValue(patient.lastName);
+                    this.form.controls.birthDate.setValue(moment(patient.birthDate));
+                    this.form.controls.email.setValue(patient.email);
+                    this.form.controls.phone.setValue(patient.phone);
+                    this.form.controls.address1.setValue(patient.address1);
+                    this.form.controls.address2.setValue(patient.address2);
+                    this.form.controls.address3.setValue(patient.address3);
+                    this.form.controls.city.setValue(patient.city);
+                    this.form.controls.state.setValue(patient.state);
+                    this.form.controls.zipcode.setValue(patient.zipcode);
                 }
             });
         }
@@ -77,20 +75,20 @@ export class PatientDetailComponent implements OnInit {
     }
 
     save() {
-        if (this.patientDetailForm.valid) {
+        if (this.form.valid) {
             this.patientEntity = new Patient();
             this.patientEntity.id = this.id;
-            this.patientEntity.firstName = this.patientDetailForm.controls.firstName.value;
-            this.patientEntity.lastName = this.patientDetailForm.controls.lastName.value;
-            this.patientEntity.birthDate = moment(this.patientDetailForm.controls.birthDate.value).toISOString();
-            this.patientEntity.email = this.patientDetailForm.controls.email.value;
-            this.patientEntity.phone = this.patientDetailForm.controls.phone.value;
-            this.patientEntity.address1 = this.patientDetailForm.controls.address1.value;
-            this.patientEntity.address2 = this.patientDetailForm.controls.address2.value;
-            this.patientEntity.address3 = this.patientDetailForm.controls.address3.value;
-            this.patientEntity.city = this.patientDetailForm.controls.city.value;
-            this.patientEntity.state = this.patientDetailForm.controls.state.value;
-            this.patientEntity.zipcode = this.patientDetailForm.controls.zipcode.value;
+            this.patientEntity.firstName = this.form.controls.firstName.value;
+            this.patientEntity.lastName = this.form.controls.lastName.value;
+            this.patientEntity.birthDate = moment(this.form.controls.birthDate.value).toISOString();
+            this.patientEntity.email = this.form.controls.email.value;
+            this.patientEntity.phone = this.form.controls.phone.value;
+            this.patientEntity.address1 = this.form.controls.address1.value;
+            this.patientEntity.address2 = this.form.controls.address2.value;
+            this.patientEntity.address3 = this.form.controls.address3.value;
+            this.patientEntity.city = this.form.controls.city.value;
+            this.patientEntity.state = this.form.controls.state.value;
+            this.patientEntity.zipcode = this.form.controls.zipcode.value;
             
             if (!this.editMode) {
                 this.patientService.createPatient(this.patientEntity).subscribe(patient => {
@@ -112,23 +110,7 @@ export class PatientDetailComponent implements OnInit {
                 });
             }
         } else {
-            Object.keys(this.patientDetailForm.controls).forEach(field => {
-                const control = this.patientDetailForm.get(field);
-                control.markAsTouched({ onlySelf: true });
-            });
-            // Use this if nested
-            // this.validateAllFormFields(this.patientDetailForm);
+            this.utilityService.validateAllFormFields(this.form);
         }
     }
-
-    // private validateAllFormFields(formGroup: FormGroup) {
-    //     Object.keys(formGroup.controls).forEach(field => {
-    //         const control = formGroup.get(field);
-    //         if (control instanceof FormControl) {
-    //             control.markAsTouched({ onlySelf: true });
-    //         } else if (control instanceof FormGroup) {
-    //             this.validateAllFormFields(control);
-    //         }
-    //     });
-    // }
 }

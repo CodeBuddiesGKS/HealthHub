@@ -1,38 +1,29 @@
-
 <mat-toolbar color="primary">
-    <span>Health Hub</span>
-  
-    <span class="fill-remaining-space"></span>
-  
-    <span>
-      <mat-menu #appMenu="matMenu">
-        <ng-template matMenuContent let-name="name">
-          <button mat-menu-item>My Profile</button>
-          <button mat-menu-item>Settings</button>
-          <button mat-menu-item>Help</button>
-          <mat-divider></mat-divider>
-          <button mat-menu-item>Sign Out</button>
-        </ng-template>
-      </mat-menu>
-  
-      <span style="font-size: 12px;">Signed in as: {{name}}</span>
-  
-      <button mat-icon-button [matMenuTriggerFor]="appMenu" [matMenuTriggerData]="{name: name}">
-        <mat-icon class="account-avatar-icon">account_circle</mat-icon>
-      </button>
-    </span>
-  </mat-toolbar>
+  <span>Health Hub</span>
+  <span class="fill-remaining-space"></span>
+  <span>
+    <mat-menu #appMenu="matMenu">
+      <ng-template matMenuContent let-name="name">
+        <button mat-menu-item>My Profile</button>
+        <button mat-menu-item>Settings</button>
+        <button mat-menu-item>Help</button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item>Sign Out</button>
+      </ng-template>
+    </mat-menu>
+    <span style="font-size: 12px;">Signed in as: {{name}}</span>
+    <button mat-icon-button [matMenuTriggerFor]="appMenu" [matMenuTriggerData]="{name: name}">
+      <mat-icon class="account-avatar-icon">account_circle</mat-icon>
+    </button>
+  </span>
+</mat-toolbar>
 
-  <nav mat-tab-nav-bar color="accent" backgroundColor="primary">
-    <a mat-tab-link
-      *ngFor="let tab of tabs"
-      [routerLink]="tab.path"
-      routerLinkActive #rla="routerLinkActive"
-      [active]="rla.isActive">
-      {{tab.label}}
-    </a>
-  </nav>
-  
-  <router-outlet></router-outlet>
+<nav mat-tab-nav-bar backgroundColor="primary" color="accent">
+  <a mat-tab-link *ngFor="let tab of tabs" [routerLink]="tab.path" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">
+    {{tab.label}}
+  </a>
+</nav>
 
-  <app-message></app-message>
+<router-outlet></router-outlet>
+
+<app-message></app-message>

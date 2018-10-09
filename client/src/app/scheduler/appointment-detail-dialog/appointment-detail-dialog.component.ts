@@ -1,17 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {
-    AbstractControl,
-    FormControl,
-    FormGroup,
-    ValidatorFn,
-    Validators
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { AppointmentService } from '../shared/appointment.service';
 import { MessageService } from '../../core/message/message.service';
 import { PatientService } from '../../patient/shared/patient.service';
 import { PhysicianService } from '../../physician/shared/physician.service';
+import { UtilityService } from '../../core/utility/utility.service';
 
 import { Appointment } from '../shared/appointment';
 import { Patient } from '../../patient/shared/patient';
@@ -21,18 +16,6 @@ import { Observable, forkJoin, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import * as moment from 'moment';
 
-function autocompleteMatchValidator(options): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-        if (!options) return null;
-        const isMatch = options.some(option => {
-            let val = typeof control.value === 'string' ? control.value : control.value.firstName + ' ' + control.value.lastName;
-            let opVal = option.firstName + ' ' + option.lastName;
-            return opVal === val;
-        });
-        return !isMatch ? { 'invalidMatch': { value: control.value } } : null;
-    };
-}
-
 @Component({
     selector: 'appointment-detail-dialog',
     templateUrl: './appointment-detail-dialog.component.html',
@@ -40,10 +23,10 @@ function autocompleteMatchValidator(options): ValidatorFn {
 })
 export class AppointmentDetailDialogComponent implements OnInit {
     public appointmentEntity: Appointment;
-    public appointmentDetailForm: FormGroup;
     public editMode: boolean;
     public filteredPatients: Observable<string[]>;
     public filteredPhysicians: Observable<string[]>;
+    public form: FormGroup;
     public id: number;
     public pageTitle: string;
     public patients: Patient[];
@@ -54,14 +37,15 @@ export class AppointmentDetailDialogComponent implements OnInit {
                 private dialogRef: MatDialogRef<AppointmentDetailDialogComponent>,
                 private messageService: MessageService,
                 private patientService: PatientService,
-                private physicianService: PhysicianService) { }
+                private physicianService: PhysicianService,
+                private utilityService: UtilityService) { }
 
     ngOnInit() {
         this.id = this.data && +this.data.id;
         this.editMode = !!this.id;
         this.pageTitle = this.editMode ? 'Edit Appointment' : 'Add Appointment';
         
-        this.appointmentDetailForm = new FormGroup({
+        this.form = new FormGroup({
             startDate: new FormControl(moment().add(1, 'hour').startOf('hour').format(moment.HTML5_FMT.DATETIME_LOCAL)),
             endDate: new FormControl(moment().add(2, 'hour').startOf('hour').format(moment.HTML5_FMT.DATETIME_LOCAL)),
             physician: new FormControl(null),
@@ -84,25 +68,25 @@ export class AppointmentDetailDialogComponent implements OnInit {
             if (appointment) {
                 let patientMatch = this.patients.find(patient => patient.id === appointment.patientId);
                 let physicianMatch = this.physicians.find(physician => physician.id === appointment.physicianId);
-                this.appointmentDetailForm.controls.startDate.setValue(moment(appointment.startDate).format(moment.HTML5_FMT.DATETIME_LOCAL));
-                this.appointmentDetailForm.controls.endDate.setValue(moment(appointment.endDate).format(moment.HTML5_FMT.DATETIME_LOCAL));
-                this.appointmentDetailForm.controls.patient.setValue(patientMatch);
-                this.appointmentDetailForm.controls.physician.setValue(physicianMatch);
-                this.appointmentDetailForm.controls.description.setValue(appointment.description);
+                this.form.controls.startDate.setValue(moment(appointment.startDate).format(moment.HTML5_FMT.DATETIME_LOCAL));
+                this.form.controls.endDate.setValue(moment(appointment.endDate).format(moment.HTML5_FMT.DATETIME_LOCAL));
+                this.form.controls.patient.setValue(patientMatch);
+                this.form.controls.physician.setValue(physicianMatch);
+                this.form.controls.description.setValue(appointment.description);
             }
 
-            this.appointmentDetailForm.controls.patient.setValidators([Validators.required, autocompleteMatchValidator(this.patients)]);
-            this.appointmentDetailForm.controls.physician.setValidators([Validators.required, autocompleteMatchValidator(this.physicians)]);
+            this.form.controls.patient.setValidators([Validators.required, this.utilityService.autocompleteMatchValidator(this.patients, 'firstName', 'lastName')]);
+            this.form.controls.physician.setValidators([Validators.required, this.utilityService.autocompleteMatchValidator(this.physicians, 'firstName', 'lastName')]);
             
-            this.filteredPatients = this.appointmentDetailForm.controls.patient.valueChanges.pipe(
+            this.filteredPatients = this.form.controls.patient.valueChanges.pipe(
                 startWith(''),
-                map<any, any>(value => typeof value === 'string' ? value : value.firstName),
-                map(value => this._filter(this.patients, value))
+                map<any, any>(value => typeof value === 'string' ? value : value.firstName + ' ' + value.lastName),
+                map(value => this.utilityService.filterAutocompleteDropdown(this.patients, value, 'firstName', 'lastName'))
             );
-            this.filteredPhysicians = this.appointmentDetailForm.controls.physician.valueChanges.pipe(
+            this.filteredPhysicians = this.form.controls.physician.valueChanges.pipe(
                 startWith(''),
-                map<any, any>(value => typeof value === 'string' ? value : value.firstName),
-                map(value => this._filter(this.physicians, value))
+                map<any, any>(value => typeof value === 'string' ? value : value.firstName + ' ' + value.lastName),
+                map(value => this.utilityService.filterAutocompleteDropdown(this.physicians, value, 'firstName', 'lastName'))
             );
         });
     }
@@ -111,56 +95,31 @@ export class AppointmentDetailDialogComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    displayPatient(patient?: Patient): string | undefined {
-      return patient ? patient.firstName + ' ' + patient.lastName : undefined;
+    displayEntity(entity: any) {
+        return entity && this.utilityService.autocompleteDisplayEntity(entity, 'firstName', 'lastName');
     }
 
-    displayPhysician(physician?: Physician): string | undefined {
-      return physician ? physician.firstName + ' ' + physician.lastName : undefined;
+    matchControlValue(options: any[], control: FormControl, ...props: string[]) {
+        this.utilityService.autocompleteMatchControlValue(options, control, props);
     }
 
-    matchControlValue(options: any[], prop: string, control: FormControl) {
-        if (typeof control.value === 'string') {
-            let match = options.find(option => option.firstName + ' ' + option.lastName === control.value);
-            if (match) control.setValue(match);
-        }
+    formControlRequiredErrorValidation(control: FormControl) {
+        return this.utilityService.formControlRequiredErrorValidation(control);
     }
 
-    patientValidationRequired() {
-        return this.appointmentDetailForm.controls.patient.invalid
-            && (this.appointmentDetailForm.controls.patient.dirty || this.appointmentDetailForm.controls.patient.touched)
-            && this.appointmentDetailForm.controls.patient.errors.required;
-    }
-
-    patientValidationMatch() {
-        return this.appointmentDetailForm.controls.patient.invalid
-            && (this.appointmentDetailForm.controls.patient.dirty || this.appointmentDetailForm.controls.patient.touched)
-            && this.appointmentDetailForm.controls.patient.value != ''
-            && this.appointmentDetailForm.controls.patient.errors.invalidMatch;
-    }
-
-    physicianValidationRequired() {
-        return this.appointmentDetailForm.controls.physician.invalid
-            && (this.appointmentDetailForm.controls.physician.dirty || this.appointmentDetailForm.controls.physician.touched)
-            && this.appointmentDetailForm.controls.physician.errors.required;
-    }
-
-    physicianValidationMatch() {
-        return this.appointmentDetailForm.controls.physician.invalid
-            && (this.appointmentDetailForm.controls.physician.dirty || this.appointmentDetailForm.controls.physician.touched)
-            && this.appointmentDetailForm.controls.physician.value != ''
-            && this.appointmentDetailForm.controls.physician.errors.invalidMatch;
+    formControlAutocompleteMatchErrorValidation(control: FormControl) {
+        return this.utilityService.formControlAutocompleteMatchErrorValidation(control);
     }
     
     save() {
-        if (this.appointmentDetailForm.valid) {
+        if (this.form.valid) {
             this.appointmentEntity = new Appointment();
             this.appointmentEntity.id = this.id;
-            this.appointmentEntity.startDate = moment(this.appointmentDetailForm.controls.startDate.value).toISOString();
-            this.appointmentEntity.endDate = moment(this.appointmentDetailForm.controls.endDate.value).toISOString();
-            this.appointmentEntity.patientId = this.appointmentDetailForm.controls.patient.value.id;
-            this.appointmentEntity.physicianId = this.appointmentDetailForm.controls.physician.value.id;
-            this.appointmentEntity.description = this.appointmentDetailForm.controls.description.value;
+            this.appointmentEntity.startDate = moment(this.form.controls.startDate.value).toISOString();
+            this.appointmentEntity.endDate = moment(this.form.controls.endDate.value).toISOString();
+            this.appointmentEntity.patientId = this.form.controls.patient.value.id;
+            this.appointmentEntity.physicianId = this.form.controls.physician.value.id;
+            this.appointmentEntity.description = this.form.controls.description.value;
 
             if (!this.editMode) {
                 this.appointmentService.createAppointment(this.appointmentEntity).subscribe(appointment => {
@@ -182,28 +141,7 @@ export class AppointmentDetailDialogComponent implements OnInit {
                 });
             }
         } else {
-            Object.keys(this.appointmentDetailForm.controls).forEach(field => {
-                const control = this.appointmentDetailForm.get(field);
-                control.markAsTouched({ onlySelf: true });
-            });
-            // Use this if nested
-            // this.validateAllFormFields(this.appointmentDetailForm);
+            this.utilityService.validateAllFormFields(this.form);
         }
-    }
-
-    // private validateAllFormFields(formGroup: FormGroup) {
-    //     Object.keys(formGroup.controls).forEach(field => {
-    //         const control = formGroup.get(field);
-    //         if (control instanceof FormControl) {
-    //             control.markAsTouched({ onlySelf: true });
-    //         } else if (control instanceof FormGroup) {
-    //             this.validateAllFormFields(control);
-    //         }
-    //     });
-    // }
-
-    private _filter(arr: any[], value: string): string[] {
-        const filterValue = value.toLowerCase();
-        return arr.filter(item => item.firstName.toLowerCase().indexOf(filterValue) === 0);
     }
 }

@@ -8,7 +8,7 @@
       fxFlex.sm="70" fxFlexOffset.sm="15"
       fxFlex.xs="96" fxFlexOffset.xs="2">
       <h2 fxFlex="100">{{pageTitle}}</h2>
-      <form fxLayout="row wrap" fxFlex="100" [formGroup]="physicianDetailForm">
+      <form fxLayout="row wrap" fxFlex="100" [formGroup]="form">
         <h4 fxFlex="100">General Info</h4>
         <!-- First Name - text -->
         <mat-form-field fxFlex="49" fxFlex.xs="100">
@@ -78,15 +78,15 @@
             placeholder="Office"
             aria-label="Office"
             formControlName="office"
-            (change)="matchControlValue(offices, 'title', this.physicianDetailForm.controls.office)"
+            (change)="matchControlValue(offices, form.controls.office, 'title')"
             [matAutocomplete]="officeAuto"
             required>
-          <mat-error *ngIf="officeValidationRequired()">This field is required</mat-error>
-          <mat-error *ngIf="officeValidationMatch()">Invalid office selected</mat-error>
+          <mat-error *ngIf="formControlRequiredErrorValidation(form.controls.office)">This field is required</mat-error>
+          <mat-error *ngIf="formControlAutocompleteMatchErrorValidation(form.controls.office)">Invalid office selected</mat-error>
           <mat-autocomplete
             #officeAuto="matAutocomplete"
             autoActiveFirstOption
-            [displayWith]="displayOffice">
+            [displayWith]="displayEntity.bind(this)">
             <mat-option *ngFor="let office of filteredOffices | async" [value]="office">
               {{office.title}}
             </mat-option>

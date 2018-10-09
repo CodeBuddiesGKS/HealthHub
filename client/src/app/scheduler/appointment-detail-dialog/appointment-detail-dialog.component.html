@@ -3,7 +3,7 @@
     fxFlex="90" fxFlexOffset="5"
     fxFlex.xs="100" fxFlexOffset.xs="0">
     <h2 fxFlex="100">{{pageTitle}}</h2>
-    <form fxLayout="row wrap" fxFlex="100" [formGroup]="appointmentDetailForm">
+    <form fxLayout="row wrap" fxFlex="100" [formGroup]="form">
       <!-- Start Date - Datetime -->
       <mat-form-field fxFlex="49" fxFlex.xs="100">
         <mat-label>Start Date / Time</mat-label>
@@ -36,15 +36,15 @@
           aria-label="Physician"
           matInput
           formControlName="physician"
-          (change)="matchControlValue(physicians, 'firstName', this.appointmentDetailForm.controls.physician)"
+          (change)="matchControlValue(physicians, form.controls.physician, 'firstName', 'lastName')"
           [matAutocomplete]="physicianAuto"
           required>
-        <mat-error *ngIf="physicianValidationRequired()">This field is required</mat-error>
-        <mat-error *ngIf="physicianValidationMatch()">Invalid physician selected</mat-error>
+        <mat-error *ngIf="formControlRequiredErrorValidation(form.controls.physician)">This field is required</mat-error>
+        <mat-error *ngIf="formControlAutocompleteMatchErrorValidation(form.controls.physician)">Invalid physician selected</mat-error>
         <mat-autocomplete
           autoActiveFirstOption
           #physicianAuto="matAutocomplete"
-          [displayWith]="displayPhysician">
+          [displayWith]="displayEntity.bind(this)">
           <mat-option *ngFor="let physician of filteredPhysicians | async" [value]="physician">
             {{physician.firstName + ' ' + physician.lastName}}
           </mat-option>
@@ -58,15 +58,15 @@
           aria-label="Patient"
           matInput
           formControlName="patient"
-          (change)="matchControlValue(patients, 'firstName', this.appointmentDetailForm.controls.patient)"
+          (change)="matchControlValue(patients, form.controls.patient, 'firstName', 'lastName')"
           [matAutocomplete]="patientAuto"
           required>
-        <mat-error *ngIf="patientValidationRequired()">This field is required</mat-error>
-        <mat-error *ngIf="patientValidationMatch()">Invalid patient selected</mat-error>
+        <mat-error *ngIf="formControlRequiredErrorValidation(form.controls.patient)">This field is required</mat-error>
+        <mat-error *ngIf="formControlAutocompleteMatchErrorValidation(form.controls.patient)">Invalid patient selected</mat-error>
         <mat-autocomplete
           autoActiveFirstOption
           #patientAuto="matAutocomplete"
-          [displayWith]="displayPatient">
+          [displayWith]="displayEntity.bind(this)">
           <mat-option *ngFor="let patient of filteredPatients | async" [value]="patient">
             {{patient.firstName + ' ' + patient.lastName}}
           </mat-option>

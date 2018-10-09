@@ -1,12 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-    FormControl,
-    ValidatorFn,
-    AbstractControl,
-    FormGroup,
-    Validators
-} from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { MessageService } from '../../core/message/message.service';
 import { OfficeService } from '../../office/shared/office.service';
@@ -21,19 +14,6 @@ import { Observable, forkJoin, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import * as moment from 'moment';
 
-function autocompleteMatchValidator(officeList): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-        if (!officeList) return null;
-
-        const isOfficeMatch = officeList.some(office => {
-            let testVal = typeof control.value === 'string' ? control.value : control.value.title
-            let bool = office.title === testVal;
-            return bool;
-        });
-        return !isOfficeMatch ? { 'invalidOffice': { value: control.value } } : null;
-    };
-}
-
 @Component({
   selector: 'app-physician-detail',
   templateUrl: './physician-detail.component.html',
@@ -46,24 +26,23 @@ export class PhysicianDetailComponent implements OnInit {
     public id: number;
     public offices: Office[];
     public pageTitle: string;
-    public physicianDetailForm: FormGroup;
+    public form: FormGroup;
     public physicianEntity: Physician;
     public returnUrl: string;
 
     constructor(private messageService: MessageService,
                 private officeService: OfficeService,
                 private physicianService: PhysicianService,
-                private route: ActivatedRoute,
                 private utilityService: UtilityService) { }
 
     ngOnInit() {
         this.returnUrl = '/physician';
-        this.id = +this.route.snapshot.paramMap.get('id');
+        this.id = +this.utilityService.getRouteParam('id');
         this.editMode = !!this.id;
         this.genders = GENDERS;
         this.pageTitle = this.editMode ? 'Edit Physician' : 'Add Physician';
 
-        this.physicianDetailForm = new FormGroup({
+        this.form = new FormGroup({
             office: new FormControl(null),
             firstName: new FormControl(""),
             lastName: new FormControl(""),
@@ -84,20 +63,20 @@ export class PhysicianDetailComponent implements OnInit {
 
             if (physician) {
                 let officeMatch = this.offices.find(office => office.id === physician.officeId);
-                this.physicianDetailForm.controls.office.setValue(officeMatch);
-                this.physicianDetailForm.controls.firstName.setValue(physician.firstName);
-                this.physicianDetailForm.controls.lastName.setValue(physician.lastName);
-                this.physicianDetailForm.controls.employmentDate.setValue(moment(physician.employmentDate));
-                this.physicianDetailForm.controls.email.setValue(physician.email);
-                this.physicianDetailForm.controls.phone.setValue(physician.phone);
-                this.physicianDetailForm.controls.gender.setValue(physician.gender);
+                this.form.controls.office.setValue(officeMatch);
+                this.form.controls.firstName.setValue(physician.firstName);
+                this.form.controls.lastName.setValue(physician.lastName);
+                this.form.controls.employmentDate.setValue(moment(physician.employmentDate));
+                this.form.controls.email.setValue(physician.email);
+                this.form.controls.phone.setValue(physician.phone);
+                this.form.controls.gender.setValue(physician.gender);
             }
 
-            this.physicianDetailForm.controls.office.setValidators([Validators.required, autocompleteMatchValidator(this.offices)]);
-            this.filteredOffices = this.physicianDetailForm.controls.office.valueChanges.pipe(
+            this.form.controls.office.setValidators([Validators.required, this.utilityService.autocompleteMatchValidator(this.offices, 'title')]);
+            this.filteredOffices = this.form.controls.office.valueChanges.pipe(
                 startWith(''),
                 map<any, any>(value => typeof value === 'string' ? value : value.title),
-                map(value => this._filter(this.offices, value))
+                map(value => this.utilityService.filterAutocompleteDropdown(this.offices, value, 'title'))
             );
         });
     }
@@ -107,41 +86,33 @@ export class PhysicianDetailComponent implements OnInit {
         this.utilityService.reroute(this.returnUrl);
     }
 
-    displayOffice(office?: Office): string | undefined {
-      return office ? office.title : undefined;
-    }
-    
-    matchControlValue(options: any[], prop: string, control: FormControl) {
-        if (typeof control.value === 'string') {
-            let match = options.find(option => option[prop] === control.value);
-            if (match) control.setValue(match);
-        }
+    displayEntity(entity: any) {
+        return entity && this.utilityService.autocompleteDisplayEntity(entity, 'title');
     }
 
-    officeValidationRequired() {
-        return this.physicianDetailForm.controls.office.invalid
-            && (this.physicianDetailForm.controls.office.dirty || this.physicianDetailForm.controls.office.touched)
-            && this.physicianDetailForm.controls.office.errors.required;
+    matchControlValue(options: any[], control: FormControl, ...props: string[]) {
+        this.utilityService.autocompleteMatchControlValue(options, control, props);
     }
 
-    officeValidationMatch() {
-        return this.physicianDetailForm.controls.office.invalid
-            && (this.physicianDetailForm.controls.office.dirty || this.physicianDetailForm.controls.office.touched)
-            && this.physicianDetailForm.controls.office.value != ''
-            && this.physicianDetailForm.controls.office.errors.invalidOffice;
+    formControlRequiredErrorValidation(control: FormControl) {
+        return this.utilityService.formControlRequiredErrorValidation(control);
+    }
+
+    formControlAutocompleteMatchErrorValidation(control: FormControl) {
+        return this.utilityService.formControlAutocompleteMatchErrorValidation(control);
     }
     
     save() {
-        if (this.physicianDetailForm.valid) {
+        if (this.form.valid) {
             this.physicianEntity = new Physician();
             this.physicianEntity.id = this.id;
-            this.physicianEntity.officeId = this.physicianDetailForm.controls.office.value.id;
-            this.physicianEntity.firstName = this.physicianDetailForm.controls.firstName.value;
-            this.physicianEntity.lastName = this.physicianDetailForm.controls.lastName.value;
-            this.physicianEntity.employmentDate = moment(this.physicianDetailForm.controls.employmentDate.value).toISOString();
-            this.physicianEntity.email = this.physicianDetailForm.controls.email.value;
-            this.physicianEntity.phone = this.physicianDetailForm.controls.phone.value;
-            this.physicianEntity.gender = this.physicianDetailForm.controls.gender.value;
+            this.physicianEntity.officeId = this.form.controls.office.value.id;
+            this.physicianEntity.firstName = this.form.controls.firstName.value;
+            this.physicianEntity.lastName = this.form.controls.lastName.value;
+            this.physicianEntity.employmentDate = moment(this.form.controls.employmentDate.value).toISOString();
+            this.physicianEntity.email = this.form.controls.email.value;
+            this.physicianEntity.phone = this.form.controls.phone.value;
+            this.physicianEntity.gender = this.form.controls.gender.value;
 
             if (!this.editMode) {
                 this.physicianService.createPhysician(this.physicianEntity).subscribe(physician => {
@@ -163,28 +134,7 @@ export class PhysicianDetailComponent implements OnInit {
                 });
             }
         } else {
-            Object.keys(this.physicianDetailForm.controls).forEach(field => {
-                const control = this.physicianDetailForm.get(field);
-                control.markAsTouched({ onlySelf: true });
-            });
-            // Use this if nested
-            // this.validateAllFormFields(this.physicianDetailForm);
+            this.utilityService.validateAllFormFields(this.form);
         }
-    }
-
-    // private validateAllFormFields(formGroup: FormGroup) {
-    //     Object.keys(formGroup.controls).forEach(field => {
-    //         const control = formGroup.get(field);
-    //         if (control instanceof FormControl) {
-    //             control.markAsTouched({ onlySelf: true });
-    //         } else if (control instanceof FormGroup) {
-    //             this.validateAllFormFields(control);
-    //         }
-    //     });
-    // }
-
-    private _filter(arr: any[], value: string): any[] {
-        const filterValue = value.toLowerCase();
-        return arr.filter(item => item.title.toLowerCase().indexOf(filterValue) === 0);
     }
 }
